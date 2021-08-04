@@ -64,8 +64,6 @@ io.on('connection', (socket) => {
 	})
 
 	socket.on('file', (blob) => {
-		console.log('Got file', joined, blob, blob.type)
-
 		if (!joined) return;
 
 		const filename = `${id()}.${mime.extension(blob.type)}`;
