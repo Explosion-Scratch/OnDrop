@@ -1,5 +1,5 @@
 <link rel="manifest" href="manifest.json">
-<link rel="favicon" href="images/OnDrop-48.png">
+<link rel="favicon" href="https://ondrop.explosionscratc.repl.co/images/OnDrop-48.png">
 <meta name="theme-color" content="#0d0e14">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -121,6 +121,7 @@
 	}).mount("#app");
 
 	function fileInputChange(el){
+		dropZone.setAttribute("uploading", "")
 		var file = el.files[0];
 		console.log("File input changed: ", file)
 		socket.emit("uploading", {id})
