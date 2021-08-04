@@ -22,12 +22,21 @@
 <meta property="twitter:description" content="A lightning fast, simple online alternative to airdrop!">
 <meta property="twitter:image" content="images/OnDrop-512.png">
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
 <script src="https://unpkg.com/socket.io-client@4.1.2/dist/socket.io.min.js"></script>
+
 <script src="https://cdn.jsdelivr.net/gh/explosion-scratch/popup@v1.0.2/popup.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/explosion-scratch/popup@v1.0.2/popup.css">
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.7/tailwind.min.css"/>
-<link rel="stylesheet" type="text/css" media="all" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css" />
 <script src="https://unpkg.com/vue@3"></script>
+
+<script src="https://gitcdn.link/repo/polonel/SnackBar/master/dist/snackbar.min.js"></script>
+<link rel="stylesheet" href="https://gitcdn.link/repo/polonel/SnackBar/master/dist/snackbar.min.css">
+
 <div id="app">
 	<div v-if="!clients.length" class="text-center">
 		<h2 id="no_clients" class="italic font-extralight">Devices nearby or on the same network as you will show up here.</h2>
@@ -56,7 +65,35 @@
 	}
 </style>
 <script>
-	navigator.serviceWorker.register("sw.js")
+	if (!navigator.onLine){
+		offline();
+	}
+	window.addEventListener('online', online);
+	window.addEventListener('offline', offline);
+
+	const opts = {
+		pos: "bottom-right",
+		textColor: "#ccc",
+		actionTextColor: "#383e61",
+		backgroundColor: "#0d0e14",
+		actionText: "Ok!",
+	}
+	function uploadNotice(){
+		Snackbar.show({text: "Sent your file!", ...opts});
+	}
+	function offline(){
+		Snackbar.show({text: "You're currently offline. Most functions of this app will not work.", ...opts});
+	}
+	function online(){
+		Snackbar.show({text: "Back online again!", ...opts});
+	}
+</script>
+<script>
+	if('serviceWorker' in navigator){
+		navigator.serviceWorker.register('sw.js')
+			.then(reg => console.log('Service worker registered'))
+			.catch(err => console.log('Service worker not registered', err));
+	}
 	var app = Vue.createApp({
 		data(){
 			return {
@@ -171,6 +208,7 @@
 		console.log("info.fromId is: ", info.fromId, info.fromId === id)
 		if (info.fromId === id){
 			// This is to get file events from self, this means we can sense when the upload is done. We want to stop flashing the square.
+			uploadNotice();
 			[...document.querySelectorAll("[data-id]")].find(i => i.getAttribute("data-id") === info.to).removeAttribute("uploading")
 			return;
 		}
@@ -193,8 +231,6 @@
 };
 </script>
 <style>
-	@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-
 * {
     font-family: "Montserrat", sans-serif;
 }
