@@ -38,17 +38,25 @@
 <link rel="stylesheet" href="https://gitcdn.link/repo/polonel/SnackBar/master/dist/snackbar.min.css">
 
 <div id="app">
-	<div v-if="!clients.length" class="text-center">
-		<h2 id="no_clients" class="italic font-extralight">Devices nearby or on the same network as you will show up here.</h2>
-	</div>
-	<transition name="fade">
+	<transition name="scaleY" mode="out-in">
+		<div v-if="!clients.length" class="text-center">
+			<transition name="scaleY" mode="out-in">
+				<h2 id="no_clients" class="italic font-extralight" :key="message">
+						{{message}}
+				</h2>
+			</transition>
+		</div>
+	</transition>
+	<transition name="fade" mode="out-in">
 		<h2 v-if="clients.length" id="title">Drag a file to a device to upload it</h2>
 	</transition>
-	<transition name="fade">
+	<transition name="fade" mode="out-in">
 		<div id="container" v-if="clients.length" >
-			<span v-for="client in clients" :data-id="client.id" class="capitalize" @click="upload_to_client($event)">
-				{{client.name}}
-			</span>
+			<transition name="scale" mode="out-in">
+				<span v-for="client in clients" :key="client.id" :data-id="client.id" class="capitalize" @click="upload_to_client($event)">
+					{{client.name}}
+				</span>
+			</transition>
 		</div>
 	</transition>
 </div>
@@ -56,13 +64,45 @@
 <style>
 	.fade-enter-active,
 	.fade-leave-active {
-		transition: opacity 0.5s ease;
+		transition: opacity 1s ease;
 	}
 
 	.fade-enter-from,
 	.fade-leave-to {
 		opacity: 0;
 	}
+	.scale-enter-active,
+.scale-leave-active {
+  transform-origin: top;
+  transition: transform 0.3s ease-in-out;
+}
+
+.scale-enter-to,
+.scale-leave-from {
+  transform: scaleX(1);
+}
+
+.scale-enter-from,
+.scale-leave-to {
+  transform: scaleX(0);
+}
+
+
+.scaleY-enter-active,
+.scaleY-leave-active {
+  transform-origin: top;
+  transition: transform 0.3s ease-in-out;
+}
+
+.scaleY-enter-to,
+.scaleY-leave-from {
+  transform: scaleY(1);
+}
+
+.scaleY-enter-from,
+.scaleY-leave-to {
+  transform: scaleY(0);
+}
 </style>
 <script>
 	if (!navigator.onLine){
@@ -98,6 +138,8 @@
 		data(){
 			return {
 				clients: [],
+				messages: ["Devices nearby or on the same network as you will show up here.", "Click on a device to open the file chooser", "Set ?ip=anything in the url to connect with someone far away", "The file size limit is 200mb."],
+				messageIndex: 0,
 			}
 		},
 		methods: {
@@ -106,6 +148,11 @@
 				app.justClicked = t.getAttribute("data-id")
 				var fileInput = document.querySelector("#fileInput");
 				fileInput.click();
+			}
+		},
+		computed: {
+			message(){
+				return this.messages[this.messageIndex];
 			}
 		},
 		watch: {
@@ -120,8 +167,15 @@
 		}
 	}).mount("#app");
 
+	setInterval(() => {
+		app.messageIndex++;
+		if (app.messageIndex > app.messages.length - 1){
+			app.messageIndex = 0;
+		}
+	}, 5000)
+
 	function fileInputChange(el){
-		dropZone.setAttribute("uploading", "")
+		[...document.querySelectorAll("[data-id]")].find(i => i.getAttribute("data-id") === app.justClicked).setAttribute("uploading", "")
 		var file = el.files[0];
 		console.log("File input changed: ", file)
 		socket.emit("uploading", {id})
@@ -267,7 +321,7 @@ box-shadow: inset 5px 5px 10px #060609,
 }
 #popup-bg {
     filter: none !important;
-    backdrop-filter: none;
+    backdrop-filter: blur(3px);
 }
 #popup button:hover {
     background: #191b27;
@@ -333,7 +387,7 @@ box-shadow:  20px 20px 60px #060609,
 }
 [data-id]:hover{
     background: linear-gradient(145deg, #0c0d12, #0e0f15);
-box-shadow:  20px 20px 60px #060609,
+		box-shadow:  20px 20px 60px #060609,
              -20px -20px 60px #14161f;
 }
 /* dragging */
