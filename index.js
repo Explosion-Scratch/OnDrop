@@ -17,12 +17,16 @@ const mime = require('mime-types')
 
 const SERVER_URL = "https://ondrop.explosionscratc.repl.co";
 
-const files = fs.readdirSync(`${__dirname}/uploads`);
-console.log(files);
+if (fs.existsSync(`${__dirname}/uploads`)){
+	const files = fs.readdirSync(`${__dirname}/uploads`);
+	console.log(files);
 
-files.forEach(file => {
-	fs.unlinkSync(`${__dirname}/uploads/${file}`)
-})
+	files.forEach(file => {
+		fs.unlinkSync(`${__dirname}/uploads/${file}`)
+	})
+} else {
+	fs.mkdirSync(`${__dirname}/uploads`);
+}
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
