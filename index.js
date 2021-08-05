@@ -1,0 +1,103 @@
+const express = require('express');
+var connections = [];
+const app = express();
+const {v4 : id} = require("uuid"); 
+const fs = require("fs");
+const http = require('http');
+const server = http.createServer(app);
+const { Server } = require("socket.io");
+
+const FILE_SIZE_LIMIT = 200/*mb*/;
+
+const io = new Server(server, {
+	pingTimeout: 30000,
+	maxHttpBufferSize: 1e6 * FILE_SIZE_LIMIT,
+});
+const mime = require('mime-types')
+
+const SERVER_URL = "https://ondrop.explosionscratc.repl.co";
+
+const files = fs.readdirSync(`${__dirname}/uploads`);
+console.log(files);
+
+files.forEach(file => {
+	fs.unlinkSync(`${__dirname}/uploads/${file}`)
+})
+
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + '/index.html');
+});
+app.use(express.static(__dirname))
+
+io.on('connection', (socket) => {
+	var joined = false;
+	var ip = null;
+	var _id = id();
+	var name = id();
+  console.log('a user connected');
+  socket.on('disconnect', () => {
+    console.log('user disconnected');
+		connections = connections.filter(i => i.id !== _id)
+		socket.to(ip).emit("client left", {name, id: _id})
+  });
+
+	socket.on("uploading", ({id}) => {
+		io.to(ip).emit("uploading", {id})
+	})
+
+	socket.on('ip', (info) => {
+		joined = true;
+		ip = info.addr;
+		name = info.name;
+		const this_socket = {ip, name, id: _id, userAgent: info.userAgent};
+		connections.push(this_socket)
+
+		socket.join(ip)
+		// Join the ID room.
+		socket.join(_id)
+		socket.emit("joined room", ip);
+		io.to(_id).emit("id", _id)
+		for (let i of connections.filter(item => item.ip === ip).filter(item => item.id !== _id)){
+			io.to(_id).emit("new client", {name: i.name, id: i.id, userAgent: info.userAgent})
+		}
+		socket.to(ip).emit("new client", {name, id: _id, userAgent: info.userAgent})
+	})
+
+	socket.on('file', (blob) => {
+		if (!joined) return;
+
+		const filename = `${id()}.${mime.extension(blob.type)}`;
+
+		fs.writeFileSync(`${__dirname}/uploads/${filename}`, blob.file)
+		//Emit done uploading event to other clients
+		socket.to(ip).emit("done uploading", {id: _id})
+		const FIVE_MINUTES = 1000 * 60 * 5
+		setTimeout(() => fs.unlink(`${__dirname}/uploads/${filename}`, () => {}), FIVE_MINUTES)
+		// Implement destination, security isn't really a concern here because they're on the same network.
+		io.to(ip).emit("got file", {to: blob.to, url: `${SERVER_URL}/dl/${filename}`, from: name, name: blob.name, fromId: _id});
+	})
+});
+app.get("/dl/:id", (req, res) => {
+	var error = false;
+	try {
+		res.sendFile(`${__dirname}/uploads/${req.params.id}`);
+	} catch(e){
+		res.json({error: true, message: "No such file exists"})
+		error = true;
+	}
+	// Removing the file doesn't let people download
+	/*
+	if (!error){
+		setTimeout(() => {
+			try {
+				fs.unlink(`${__dirname}/uploads/${req.params.id}`, () => {});
+			} catch(e){}
+		}, 1000)
+	}
+	*/
+})
+
+
+server.listen(3000, () => {
+  console.log('listening on *:3000');
+});
