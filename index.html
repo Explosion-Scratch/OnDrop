@@ -182,7 +182,7 @@
 		socket.emit("file", {file: file, name: file.name, type: file.type, to: app.justClicked})
 	}
 
-	document.onpaste = function (event) {
+	document.onpaste = async function (event) {
     var items = (event.clipboardData || event.originalEvent.clipboardData).items;
     console.log(JSON.stringify(items)); // might give you mime types
     for (var index in items) {
@@ -191,6 +191,7 @@
         if (item.kind === 'file') {
             file = item.getAsFile();
         } else if (item.kind === "string") {
+					file = await new Promise(res => file.getAsString(res));
 					file = new File([file], "message.txt", {type: "text/plain"})
 				} else { return }
 				for (let item of document.querySelectorAll("[data-id]")){
