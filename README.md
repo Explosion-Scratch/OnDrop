@@ -30,6 +30,8 @@
 # What people are saying about ondrop:
 ![image](https://user-images.githubusercontent.com/61319150/128539453-6e503ebf-bd26-44c7-bdce-ee4710684717.png)
 ![image](https://user-images.githubusercontent.com/61319150/128539928-662bf0b5-e3e1-453d-b49b-77a2ddfbf13e.png)
+![image](https://user-images.githubusercontent.com/61319150/128540231-9effe93b-b6b9-43f2-b642-3a7e9a3cc637.png)
+![image](https://user-images.githubusercontent.com/61319150/128540309-69669f7d-4a4f-40ee-91e0-09826a959ba5.png)
 
 # FAQ
 (Not actually asked frequently, this is just stuff that people may ask if they ever see this project and are interested in it :weary:)
@@ -58,6 +60,7 @@ It's open source, so sure, but give credit :neutral_face:
 - You can click on a user to share a file with them.
 - You can create a unique link to share with someone if they don't live nearby or aren't on the same wifi network by using the `ip` query parameter, (like this: `https://ondrop.explosionscratc.repl.co/?ip=test`, now if the person you send it to goes to that link you'll be able to connect)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEwMjA4NTY1OTUsLTE4MTY3MDcyOTQsLT
-IxMTM1ODgyMjcsMTI5MzIyNDcwMywtNTU0OTExODgyXX0=
+eyJoaXN0b3J5IjpbLTExNzE2MTM0MTcsLTEwMjA4NTY1OTUsLT
+E4MTY3MDcyOTQsLTIxMTM1ODgyMjcsMTI5MzIyNDcwMywtNTU0
+OTExODgyXX0=
 -->
