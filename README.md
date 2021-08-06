@@ -46,6 +46,10 @@ OnDrop uses your [IP address](https://www.dummies.com/computers/pcs/what-is-an-i
 ## Does OnDrop track you?
 Absolutely not! All files are deleted after 5 minutes, and whenever I run the server. IP addresses are not tracked in any way, they are only used as a grouping tool to group people together.
 
+## How'd you get that epic name?
+![image](https://user-images.githubusercontent.com/61319150/128540633-293484a4-91ef-4e2b-bece-efa0f941f48c.png)
+
+
 ## Wowww, I love those shadows and stuff you did
 Thanks! That's a style called [neomorphism](https://uxdesign.cc/neumorphism-in-user-interfaces-b47cef3bf3a6), which is a super cool way to make stuff look realistic and pleasant using CSS.
 
@@ -60,7 +64,7 @@ It's open source, so sure, but give credit :neutral_face:
 - You can click on a user to share a file with them.
 - You can create a unique link to share with someone if they don't live nearby or aren't on the same wifi network by using the `ip` query parameter, (like this: `https://ondrop.explosionscratc.repl.co/?ip=test`, now if the person you send it to goes to that link you'll be able to connect)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTExNzE2MTM0MTcsLTEwMjA4NTY1OTUsLT
-E4MTY3MDcyOTQsLTIxMTM1ODgyMjcsMTI5MzIyNDcwMywtNTU0
-OTExODgyXX0=
+eyJoaXN0b3J5IjpbLTk1NzE5MTU3NCwtMTE3MTYxMzQxNywtMT
+AyMDg1NjU5NSwtMTgxNjcwNzI5NCwtMjExMzU4ODIyNywxMjkz
+MjI0NzAzLC01NTQ5MTE4ODJdfQ==
 -->
