@@ -53,6 +53,9 @@ Absolutely not! All files are deleted after 5 minutes, and whenever I run the se
 ## Wowww, I love those shadows and stuff you did
 Thanks! That's a style called [neomorphism](https://uxdesign.cc/neumorphism-in-user-interfaces-b47cef3bf3a6), which is a super cool way to make stuff look realistic and pleasant using CSS.
 
+## All these other people you show are contacting you on discord and I feel left out
+`--Explosion--#0001` :smile:
+
 ## How did you come up with this idea?
 ![Roll Safe, the Guy-Tapping-Head Meme](https://pyxis.nymag.com/v1/imgs/d6a/dc7/4a5001b7beea096457f480c8808572428b-09-roll-safe.2x.rsocial.w600.jpg)
 Came to me when I realized that multiple people can have the same IP address, therefore it'd be possible to group them and figure out who's near whom.
@@ -64,7 +67,7 @@ It's open source, so sure, but give credit :neutral_face:
 - You can click on a user to share a file with them.
 - You can create a unique link to share with someone if they don't live nearby or aren't on the same wifi network by using the `ip` query parameter, (like this: `https://ondrop.explosionscratc.repl.co/?ip=test`, now if the person you send it to goes to that link you'll be able to connect)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTk1NzE5MTU3NCwtMTE3MTYxMzQxNywtMT
+eyJoaXN0b3J5IjpbLTQ2ODkxNzMwNSwtMTE3MTYxMzQxNywtMT
 AyMDg1NjU5NSwtMTgxNjcwNzI5NCwtMjExMzU4ODIyNywxMjkz
 MjI0NzAzLC01NTQ5MTE4ODJdfQ==
 -->
