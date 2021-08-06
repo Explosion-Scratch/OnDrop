@@ -28,6 +28,7 @@
 - UI support for custom keys instead of IP adresses. (Allows you to connect with someone with a different IP adress than you. Currently it's `?ip=[anything_here]` in the URL.
 
 # What people are saying about ondrop:
+![image](https://user-images.githubusercontent.com/61319150/128539453-6e503ebf-bd26-44c7-bdce-ee4710684717.png)
 
 # FAQ
 (Not actually asked frequently, this is just stuff that people may ask if they ever see this project and are interested in it :weary:)
@@ -56,6 +57,6 @@ It's open source, so sure, but give credit :neutral_face:
 - You can click on a user to share a file with them.
 - You can create a unique link to share with someone if they don't live nearby or aren't on the same wifi network by using the `ip` query parameter, (like this: `https://ondrop.explosionscratc.repl.co/?ip=test`, now if the person you send it to goes to that link you'll be able to connect)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE5MzY4MTQ3NSwtMjExMzU4ODIyNywxMj
-kzMjI0NzAzLC01NTQ5MTE4ODJdfQ==
+eyJoaXN0b3J5IjpbLTE4MTY3MDcyOTQsLTIxMTM1ODgyMjcsMT
+I5MzIyNDcwMywtNTU0OTExODgyXX0=
 -->
