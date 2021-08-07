@@ -7,8 +7,31 @@ getWebWorkerResponse("generate-keys").then((_key) => {
 	ready();
 })
 
-export async function encryptFile(file){
-  
+export function encryptFile(file, destination){
+	//Because of how this works files can be sent only to one person. We need to get their destination key from the server
+	return new Promise(async (resolve, reject) => {
+		var chunks = [];
+		const CHUNK_SIZE = 300;//300 chars per encryption.
+		const reader = new FileReader();
+		reader.addEventListener("load", ({result}) => {
+			let dataUrl = result;
+			let dataUrl_chunks = chunkString(result, CHUNK_SIZE);
+			//Encrypt each chunk
+			chunks = dataUrl_chunks.map((section) => encrypt(section, destination));
+			//Wait for all of it.
+			await Promise.all(chunks);
+			resolve(chunks);
+		});
+		/** https://stackoverflow.com/questions/7033639/split-large-string-in-n-size-chunks-in-javascript */
+		function chunkString(str, length) {
+		  return str.match(new RegExp('.{1,' + length + '}', 'g'));
+		}
+		reader.readAsDataURL(file);
+	});
+	
+}
+export async function decryptFile(text){
+
 }
 
 export async function encrypt(message, destinationKey){
