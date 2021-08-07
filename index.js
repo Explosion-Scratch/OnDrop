@@ -38,11 +38,18 @@ io.on('connection', (socket) => {
 	var ip = null;
 	var _id = id();
 	var name = id();
+	var files = [];
   console.log('a user connected');
   socket.on('disconnect', () => {
     console.log('user disconnected');
 		connections = connections.filter(i => i.id !== _id)
-		socket.to(ip).emit("client left", {name, id: _id})
+		socket.to(ip).emit("client left", {name, id: _id});
+
+		for (let item of files){
+			try {
+				fs.unlinkSync(`${__dirname}/uploads/${item}`);
+			} catch(e){}
+		}
   });
 
 	socket.on("uploading", ({id}) => {
@@ -72,6 +79,8 @@ io.on('connection', (socket) => {
 
 		const filename = `${id()}.${mime.extension(blob.type)}`;
 
+		files.push(filename)
+
 		fs.writeFileSync(`${__dirname}/uploads/${filename}`, blob.file)
 		//Emit done uploading event to other clients
 		socket.to(ip).emit("done uploading", {id: _id})
@@ -89,7 +98,7 @@ app.get("/dl/:id", (req, res) => {
 		res.json({error: true, message: "No such file exists"})
 		error = true;
 	}
-	// Removing the file doesn't let people download
+	// Removing the file doesn't let people download twice
 	/*
 	if (!error){
 		setTimeout(() => {
