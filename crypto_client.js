@@ -30,8 +30,11 @@ export function encryptFile(file, destination){
 	});
 	
 }
-export async function decryptFile(text){
 
+export async function decryptFile(chunks){
+	//Decrypted should equal the original data url of the file sent, each peice being `CHUNK_SIZE` length containing a section of it.
+	var decrypted = await Promise.all(chunks.map(decrypt));
+	return decrypted.join("");//Join it back together.
 }
 
 export async function encrypt(message, destinationKey){
