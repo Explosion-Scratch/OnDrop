@@ -18,12 +18,12 @@
 <small><i>Name by [Jeffalo](https://github.com/jeffalo)</i></small>
 
 ## Stuff that will be added soon:
-- ~~PWA support! Installable web-apps!!~~ (done)
+- <mark>END TO END ENCRYPTION!!!</mark>
+	- 
 - Minified and self-hosted libraries (no more `<script>` and `<link>` tags)
 - Offline (bluetooth?) support
-	- Partially done, PWA support implemented, app doesn't send anything while offline though.
-	- OOH: Just found [this](https://web.dev/bluetooth/)
-- Support for pasting images (`Control + V`)
+	- Impossible without online connectivity, the best thing is webrtc, which still requires a server.
+- ~~Support for pasting images (`Control + V`)~~ (Done!)
 - Browser extension?
 - UI support for custom keys instead of IP adresses. (Allows you to connect with someone with a different IP adress than you. Currently it's `?ip=[anything_here]` in the URL.
 
@@ -70,7 +70,7 @@ It's open source, so sure, but give credit :neutral_face:
 - You can drag and drop not just files, but images and text from webpages as well!
 - Now installable as a PWA!
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTU1MTgzMzI1MywtMjkxMjA5MzksLTExNz
-E2MTM0MTcsLTEwMjA4NTY1OTUsLTE4MTY3MDcyOTQsLTIxMTM1
-ODgyMjcsMTI5MzIyNDcwMywtNTU0OTExODgyXX0=
+eyJoaXN0b3J5IjpbMzY1MDAyMjA4LC0yOTEyMDkzOSwtMTE3MT
+YxMzQxNywtMTAyMDg1NjU5NSwtMTgxNjcwNzI5NCwtMjExMzU4
+ODIyNywxMjkzMjI0NzAzLC01NTQ5MTE4ODJdfQ==
 -->
