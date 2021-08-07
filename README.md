@@ -19,7 +19,7 @@
 
 ## Stuff that will be added soon:
 - <mark>END TO END ENCRYPTION!!!</mark>
-	- 
+	- Only public keys sent, files encrypted in chunks.
 - Minified and self-hosted libraries (no more `<script>` and `<link>` tags)
 - Offline (bluetooth?) support
 	- Impossible without online connectivity, the best thing is webrtc, which still requires a server.
@@ -70,7 +70,7 @@ It's open source, so sure, but give credit :neutral_face:
 - You can drag and drop not just files, but images and text from webpages as well!
 - Now installable as a PWA!
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMzY1MDAyMjA4LC0yOTEyMDkzOSwtMTE3MT
-YxMzQxNywtMTAyMDg1NjU5NSwtMTgxNjcwNzI5NCwtMjExMzU4
-ODIyNywxMjkzMjI0NzAzLC01NTQ5MTE4ODJdfQ==
+eyJoaXN0b3J5IjpbLTExNTQwMDYwNzMsLTI5MTIwOTM5LC0xMT
+cxNjEzNDE3LC0xMDIwODU2NTk1LC0xODE2NzA3Mjk0LC0yMTEz
+NTg4MjI3LDEyOTMyMjQ3MDMsLTU1NDkxMTg4Ml19
 -->
