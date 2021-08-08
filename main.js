@@ -52,7 +52,7 @@ setInterval(() => {
   }
 }, 5000);
 
-function fileInputChange(el) {
+async function fileInputChange(el) {
   [...document.querySelectorAll("[data-id]")]
     .find((i) => i.getAttribute("data-id") === app.justClicked)
     .setAttribute("uploading", "");
