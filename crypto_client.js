@@ -10,6 +10,7 @@ var crypt = new Crypt({
     aesStandard: "AES-CTR",
     rsaStandard: "RSAES-PKCS1-V1_5"
 })
+var rsa = new RSA();
 
 var keyPromise = rsa.generateKeyPairAsync().then(({publicKey}) => {
 	socket.emit("public key", {key: publicKey});
@@ -23,7 +24,7 @@ export async function key(){
 export function encrypt({file, to}){
 	return new Promise(resolve => {
 		var reader = new FileReader();
-		reader.onload = () => {
+		reader.onload = async () => {
 			//In case I forget server side code for this is as such:
 			/*
 			socket.on("get public key", ({id}, callback) => {
@@ -48,7 +49,7 @@ export function encrypt({file, to}){
 }
 
 
-export function decrypt(fileString){
+export async function decrypt(fileString){
 	const { privateKey } = await keyPromise;
 	return crypt.decrypt(privateKey, fileString).message;//Should return the data URL if everything works right.
 }
