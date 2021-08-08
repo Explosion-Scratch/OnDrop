@@ -17,7 +17,7 @@ window.c = {
 window.cryptWorker.addEventListener("message", ({data}) => {
 	if (data.type = "emit"){
 		socket.emit(data.event, data.data, (res) => {
-			window.cryptWorker.postMessage(res)
+			window.cryptWorker.postMessage({type: "emitRes", data: res})
 		})
 	}
 })

@@ -4,6 +4,7 @@
 	eval(await fetch("https://cdn.jsdelivr.net/gh/juhoen/hybrid-crypto-js@0.2.4/web/hybrid-crypto.min.js").then(res => res.text()))
 
 	onmessage = async function(e) {
+		if (e.data.type) return;
 		const [ messageType, messageId, data ] = e.data
 		let result
 		switch (messageType) {
@@ -28,10 +29,11 @@
 			event,
 			data,
 		})
+		if (!cb) return;
 		self.addEventListener("message", handler)
 		function handler({data}){
 			if (data.type = "emitRes"){
-				log(`Got data:`, data.data)
+				console.log(`Got data:`, data.data)
 				cb(data.data);
 				self.removeEventListener("message", handler)
 			}
@@ -45,7 +47,7 @@
 	var rsa = new RSA();
 
 	var keyPromise = rsa.generateKeyPairAsync().then(async key => {
-		emit({key: key});
+		emit("public key", {key: key});
 		return key;
 	})
 

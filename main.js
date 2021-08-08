@@ -243,7 +243,9 @@ function param(name) {
 var s = document.createElement("script");
 s.src = "crypto_client.js"
 document.head.appendChild(s);
-
+s.onload = () => {
+	
+}
 function dataURItoBlob(dataURI) {
   var mime = dataURI.split(',')[0].split(':')[1].split(';')[0];
   var binary = atob(dataURI.split(',')[1]);
