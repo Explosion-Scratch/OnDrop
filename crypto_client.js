@@ -1,15 +1,25 @@
 // Assuming https://raw.githubusercontent.com/juhoen/hybrid-crypto-js/master/web/hybrid-crypto.min.js is imported
+/*
+TODOS:
+------
+• Add public key list to server side
+• Encrypt and decrypt in web worker instead of main thread (it doesn't seem to be that memory intensive though)
+• Figure out what algorithms are best.
+*/
 var crypt = new Crypt({
     aesStandard: "AES-CTR",
     rsaStandard: "RSAES-PKCS1-V1_5"
 })
 
-var keyPromise = rsa.generateKeyPairAsync();
+var keyPromise = rsa.generateKeyPairAsync().then(({publicKey}) => {
+	socket.emit("public key", {key: publicKey});
+});
 
 export async function key(){
 	return await keyPromise;
 }
 
+//Hopefully this can be used in place of the actual file data and nothing much else has to be changed.
 export function encrypt({file, to}){
 	return new Promise(resolve => {
 		var reader = new FileReader();
@@ -35,4 +45,10 @@ export function encrypt({file, to}){
 		}
 		reader.readAsDataURL(file)
 	})
+}
+
+
+export function decrypt(fileString){
+	const { privateKey } = await keyPromise;
+	return crypt.decrypt(privateKey, fileString).message;//Should return the data URL if everything works right.
 }
