@@ -21,7 +21,22 @@ window.c = {
 }
 
 window.cryptWorker.addEventListener("message", keyHandler)
-
+window.cryptWorker.addEventListener("message", ({data}) => {
+	if (data.type === "localStorage"){
+		var result;
+		if (data.method === "get"){
+			result = localStorage.getItem(data.name);
+		}
+		if (data.method === "set"){
+			localStorage.setItem(data.name, data.data)
+			result = data.data;
+		}
+		window.cryptWorker.postMessage({
+			type: "localStorage",
+			data: result,
+		})
+	}
+})
 function keyHandler(e){
 	const {type, key} = e.data;
 	if (type === "key generated") {

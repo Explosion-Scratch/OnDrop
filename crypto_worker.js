@@ -25,7 +25,16 @@
 		// Return result to the UI thread
 		postMessage([ messageId, result ])
 	}
-
+	function localStorage(method, name, data){
+		return new Promise(resolve => {
+			self.addEventListener("message", ({data}) => {
+				if (data.type === "localStorage"){
+					resolve(data.data);
+				}
+			});
+			postMessage({type: "localStorage", method, name, data})
+		})
+	}
 	function emit(event, data, cb){
 		postMessage({
 			type: "emit",
@@ -49,7 +58,19 @@
 	})
 	var rsa = new RSA();
 
-	var keyPromise = rsa.generateKeyPairAsync();
+	var keyPromise = new Promise(async resolve => {
+		var pair = await localStorage("get", "keyPair")
+		if (pair) {
+			console.log("Key pair gotten from localStorage.", pair)
+			resolve(JSON.parse(pair))
+		}
+		if (!pair) console.log("Generating pair")
+		var pair = await rsa.generateKeyPairAsync();
+		await localStorage("set", "keyPair", JSON.stringify(pair))
+		console.log(pair);
+		resolve(pair);
+	});
+
 	keyPromise.then(async key => {
 		console.log("Public key generated")
 		emit("public key", {key: key.publicKey});
