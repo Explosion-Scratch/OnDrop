@@ -118,19 +118,25 @@
 		actionText: "Ok!",
 	}
 	function uploadNotice(){
-		Snackbar.show({text: "Sent your file!", ...opts});
+		Snackbar.show({text: "Sent your file! ✈", ...opts});
 	}
 	function offline(){
-		Snackbar.show({text: "You're currently offline. Most functions of this app will not work.", ...opts});
+		Snackbar.show({text: "🔴 You're currently offline. Most functions of this app will not work.", ...opts});
 	}
 	function online(){
-		Snackbar.show({text: "Back online again!", ...opts});
+		Snackbar.show({text: "🟢 Back online again!", ...opts});
 	}
 	function decryptingNotice(){
-		Snackbar.show({text: "Decrypting your file...", ...opts});
+		Snackbar.show({text: "🔑 Decrypting your file...", ...opts});
 	}
 	function encryptingNotice(){
-		Snackbar.show({text: "Encrypting your file...", ...opts});
+		Snackbar.show({text: "🔒 Encrypting your file...", ...opts});
+	}
+	function done(){
+		Snackbar.show({text: "Done! 🎉", ...opts});
+	}
+	function publicKeyNotice(){
+		Snackbar.show({text: "Generating a public key to encrypt your files 😃", ...opts});
 	}
 </script>
 <script src="main.js"></script>

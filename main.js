@@ -154,6 +154,10 @@ fetch("https://icanhazip.com/")
         await prompt({ title: "Name", text: "Enter your name below." })
       );
     }
+		//Wait for key to be generated.
+		await cryptoLoadPromise;
+		await c.key();
+
     socket.emit("ip", {
       name: localStorage.getItem("name"),
       addr: param("ip") || ip,
@@ -206,7 +210,8 @@ socket.on("got file", async (info) => {
   if (info.to !== id) return;
 	decryptingNotice();
 	var encryptedText = await fetch(info.url).then(res => res.text())
-	info.url = dataURItoBlob(await c.decrypt(encryptedText))
+	info.url = dataURItoBlob(await c.decrypt(encryptedText));
+	done();
   alert({
     title: `${info.from} sent you a file:`,
     backgroundclick: true,
@@ -241,10 +246,21 @@ function param(name) {
 }
 
 var s = document.createElement("script");
+var cryptoLoadPromiseRes;
+var cryptoLoadPromise = new Promise(resolve => (cryptoLoadPromiseRes = resolve));
+
 s.src = "crypto_client.js"
 document.head.appendChild(s);
 s.onload = async () => {
-	console.log("Public key is", (await c.key()).publicKey)
+	publicKeyNotice();
+	// Honestly not sure why I have to do this. Calling 'c.key()' in console was working fine, but "Key promise finished" never logged and cryptoLoadPromise never resolved, so I did this and it worked.
+	await new Promise((r) => setTimeout(r, 500));
+	cryptoLoadPromiseRes();
+	console.log("key promise starting")
+	c.key().then(() => {
+		console.log("Key promise finished");
+		done();
+	})
 }
 function dataURItoBlob(dataURI) {
   var mime = dataURI.split(',')[0].split(':')[1].split(';')[0];

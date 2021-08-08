@@ -9,7 +9,10 @@
 		let result
 		switch (messageType) {
 			case 'get key':
-				result = await keyPromise
+				result = await keyPromise.then((a) => {
+					console.log("Finished key promise"); 
+					return a;
+				})
 				break
 			case 'encrypt':
 				result = await encrypt(data)
