@@ -214,7 +214,7 @@ socket.on("got file", async (info) => {
   alert({
     title: `${info.from} sent you a file:`,
     backgroundclick: true,
-    text: `<a href=${JSON.stringify(info.url)} class="underline">${
+    text: `<a target="_blank" href=${JSON.stringify(info.url)} class="underline">${
       info.name
     }</a><br><a id="download_link" href=${JSON.stringify(
       info.url
