@@ -12,16 +12,28 @@ var crypt = new Crypt({
 })
 var rsa = new RSA();
 
-var keyPromise = rsa.generateKeyPairAsync().then(({publicKey}) => {
-	socket.emit("public key", {key: publicKey});
+var socket = window.io();
+
+var keyPromise = rsa.generateKeyPairAsync().then((res) => {
+	socket.emit("public key", {key: res.publicKey});
+	return res
 });
 
-export async function key(){
+window.c = {
+	key, 
+	encrypt,
+	decrypt,
+	keyPromise,
+	rsa,
+	crypt
+}
+
+async function key(){
 	return await keyPromise;
 }
 
 //Hopefully this can be used in place of the actual file data and nothing much else has to be changed.
-export function encrypt({file, to}){
+function encrypt({file, to}){
 	return new Promise(resolve => {
 		var reader = new FileReader();
 		reader.onload = async () => {
@@ -42,14 +54,14 @@ export function encrypt({file, to}){
 					}
 				})
 			});
-			crypt.encrypt(publicKey, reader.result);
+			resolve(crypt.encrypt(publicKey, reader.result))
 		}
 		reader.readAsDataURL(file)
 	})
 }
 
 
-export async function decrypt(fileString){
+async function decrypt(fileString){
 	const { privateKey } = await keyPromise;
 	return crypt.decrypt(privateKey, fileString).message;//Should return the data URL if everything works right.
 }
