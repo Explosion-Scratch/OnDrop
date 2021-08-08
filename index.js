@@ -7,6 +7,8 @@ const http = require('http');
 const server = http.createServer(app);
 const { Server } = require("socket.io");
 
+var keys = {};
+
 const FILE_SIZE_LIMIT = 200/*mb*/;
 
 const io = new Server(server, {
@@ -15,7 +17,7 @@ const io = new Server(server, {
 });
 const mime = require('mime-types')
 
-const SERVER_URL = "https://ondrop.explosionscratc.repl.co";
+const SERVER_URL = "https://ondrop-2.explosionscratc.repl.co";
 
 if (fs.existsSync(`${__dirname}/uploads`)){
 	const files = fs.readdirSync(`${__dirname}/uploads`);
@@ -51,7 +53,14 @@ io.on('connection', (socket) => {
 			} catch(e){}
 		}
   });
-
+	socket.on("public key", ({key}) => {
+		keys[_id] = key;
+	})
+	socket.on("get public key", ({id}, callback) => {
+		console.log(Object.keys(keys), connections.map(i => i.id), `Me: ${_id}`, `Requested: ${id}`)
+		if (!keys[id]) callback({error: true, message: "Key not found"});
+		callback({error: false, key: keys[id]});
+	})
 	socket.on("uploading", ({id}) => {
 		io.to(ip).emit("uploading", {id})
 	})
@@ -77,7 +86,7 @@ io.on('connection', (socket) => {
 	socket.on('file', (blob) => {
 		if (!joined) return;
 
-		const filename = `${id()}.${mime.extension(blob.type)}`;
+		const filename = `${id()}.txt`;
 
 		files.push(filename)
 
@@ -93,7 +102,7 @@ io.on('connection', (socket) => {
 app.get("/dl/:id", (req, res) => {
 	var error = false;
 	try {
-		res.sendFile(`${__dirname}/uploads/${req.params.id}`);
+		res.json(JSON.parse(fs.readFileSync(`${__dirname}/uploads/${req.params.id}`)));
 	} catch(e){
 		res.json({error: true, message: "No such file exists"})
 		error = true;
