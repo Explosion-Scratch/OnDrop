@@ -47,7 +47,7 @@
 	var rsa = new RSA();
 
 	var keyPromise = rsa.generateKeyPairAsync().then(async key => {
-		emit("public key", {key: key});
+		emit("public key", {key: key.publicKey});
 		return key;
 	})
 
