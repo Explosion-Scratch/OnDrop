@@ -8,10 +8,29 @@ TODOS:
 */
 window.cryptWorker = new Worker("crypto_worker.js")
 
+var publicKeyPromiseRes;
+var publicKeyPromise = new Promise(resolve => (publicKeyPromiseRes = resolve))
+
 window.c = {
-	key: () => res("get key"),
-	encrypt: (stuff) => res("encrypt", stuff),
+	key: () => publicKeyPromise,
+	encrypt: (stuff) => {
+		encryptingNotice();
+		return res("encrypt", stuff);
+	},
 	decrypt: (stuff) => res("decrypt", stuff),
+}
+
+window.cryptWorker.addEventListener("message", keyHandler)
+
+function keyHandler(e){
+	const {type, key} = e.data;
+	if (type === "key generated") {
+		console.log("Got key generated message", key);
+		publicKeyPromiseRes(key);
+		window.cryptWorker.removeEventListener("message", keyHandler);
+		//Show notice
+		done();
+	}
 }
 
 window.cryptWorker.addEventListener("message", ({data}) => {

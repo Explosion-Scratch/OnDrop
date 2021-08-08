@@ -9,7 +9,7 @@
 		let result
 		switch (messageType) {
 			case 'get key':
-				result = await keyPromise.then((a) => {
+				result = await key().then((a) => {
 					console.log("Finished key promise"); 
 					return a;
 				})
@@ -49,8 +49,11 @@
 	})
 	var rsa = new RSA();
 
-	var keyPromise = rsa.generateKeyPairAsync().then(async key => {
+	var keyPromise = rsa.generateKeyPairAsync();
+	keyPromise.then(async key => {
+		console.log("Public key generated")
 		emit("public key", {key: key.publicKey});
+		postMessage({type: "key generated", key: key.publicKey})
 		return key;
 	})
 

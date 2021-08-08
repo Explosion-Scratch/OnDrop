@@ -126,7 +126,6 @@ function addDrag(dropZone) {
     }
 		
     socket.emit("uploading", { id });
-		encryptingNotice();
     socket.emit("file", {
       file: await c.encrypt({file, to: dropZone.getAttribute("data-id")}),
       name: file.name,
@@ -253,14 +252,10 @@ s.src = "crypto_client.js"
 document.head.appendChild(s);
 s.onload = async () => {
 	publicKeyNotice();
-	// Honestly not sure why I have to do this. Calling 'c.key()' in console was working fine, but "Key promise finished" never logged and cryptoLoadPromise never resolved, so I did this and it worked.
+
 	await new Promise((r) => setTimeout(r, 500));
+	
 	cryptoLoadPromiseRes();
-	console.log("key promise starting")
-	c.key().then(() => {
-		console.log("Key promise finished");
-		done();
-	})
 }
 function dataURItoBlob(dataURI) {
   var mime = dataURI.split(',')[0].split(':')[1].split(';')[0];
