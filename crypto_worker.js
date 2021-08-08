@@ -27,8 +27,15 @@
 			type: "emit",
 			event,
 			data,
-			callback: cb,
 		})
+		self.addEventListener("message", handler)
+		function handler({data}){
+			if (data.type = "emitRes"){
+				log(`Got data:`, data.data)
+				cb(data.data);
+				self.removeEventListener("message", handler)
+			}
+		}
 	}
 
 	var crypt = new Crypt({
