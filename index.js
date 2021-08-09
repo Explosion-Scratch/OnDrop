@@ -134,7 +134,7 @@ app.get("/dl/:id", (req, res) => {
   var error = false;
   try {
     res.json(
-      JSON.parse(fs.readFileSync(path.join(__dirname, "uploads", req.params.id)))
+      JSON.parse(fs.readFileSync(path.join(__dirname, "uploads", req.params.id.replaceAll("/", ""))))
     );
   } catch (e) {
     res.json({ error: true, message: "No such file exists" });
