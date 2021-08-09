@@ -23,7 +23,6 @@ jobs:
       with:
         # This part is also where you can pass other options, for example:
         prettier_options: --write **/*.{js,md,html}
-        only_changed: true
         commit_message: "Beautified code"
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
