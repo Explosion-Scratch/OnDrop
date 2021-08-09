@@ -84,8 +84,8 @@ It's open source, so sure, but give credit :neutral_face:
 - You can drag and drop not just files, but images and text from webpages as well!
 - Now installable as a PWA!
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTMwNzM4NDk2NSwtMTE1NDAwNjA3MywtMj
-kxMjA5MzksLTExNzE2MTM0MTcsLTEwMjA4NTY1OTUsLTE4MTY3
-MDcyOTQsLTIxMTM1ODgyMjcsMTI5MzIyNDcwMywtNTU0OTExOD
-gyXX0=
+eyJoaXN0b3J5IjpbLTE1MDcwODg3NjYsLTExNTQwMDYwNzMsLT
+I5MTIwOTM5LC0xMTcxNjEzNDE3LC0xMDIwODU2NTk1LC0xODE2
+NzA3Mjk0LC0yMTEzNTg4MjI3LDEyOTMyMjQ3MDMsLTU1NDkxMT
+g4Ml19
 -->
