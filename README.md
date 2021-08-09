@@ -85,9 +85,10 @@ It's open source, so sure, but give credit :neutral_face:
 - You can paste anything and it'll upload it to everyone, an image, some text, etc!
 - You can drag and drop not just files, but images and text from webpages as well!
 - Now installable as a PWA!
+- 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbOTQ4MjIxNDk1LC0xMTU0MDA2MDczLC0yOT
-EyMDkzOSwtMTE3MTYxMzQxNywtMTAyMDg1NjU5NSwtMTgxNjcw
-NzI5NCwtMjExMzU4ODIyNywxMjkzMjI0NzAzLC01NTQ5MTE4OD
-JdfQ==
+eyJoaXN0b3J5IjpbMTA2NTg4MDYyNiw5NDgyMjE0OTUsLTExNT
+QwMDYwNzMsLTI5MTIwOTM5LC0xMTcxNjEzNDE3LC0xMDIwODU2
+NTk1LC0xODE2NzA3Mjk0LC0yMTEzNTg4MjI3LDEyOTMyMjQ3MD
+MsLTU1NDkxMTg4Ml19
 -->
