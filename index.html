@@ -1,0 +1,335 @@
+<link rel="manifest" href="manifest.json" />
+<link
+  rel="favicon"
+  href="https://ondrop.explosionscratc.repl.co/images/OnDrop-48.png"
+/>
+<meta name='theme-color'    content="#ffb700">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<!-- Primary Meta Tags -->
+<title>OnDrop</title>
+<meta name="title" content="OnDrop" />
+<meta
+  name="description"
+  content="A lightning fast, simple online alternative to airdrop!"
+/>
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://ondrop.explosionscratc.repl.co" />
+<meta property="og:title" content="OnDrop" />
+<meta
+  property="og:description"
+  content="A lightning fast, simple online alternative to airdrop!"
+/>
+<meta property="og:image" content="images/OnDrop-512.png" />
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content="https://ondrop.explosionscratc.repl.co" />
+<meta property="twitter:title" content="OnDrop" />
+<meta
+  property="twitter:description"
+  content="A lightning fast, simple online alternative to airdrop!"
+/>
+<meta property="twitter:image" content="images/OnDrop-512.png" />
+
+<!-- Montserrat -->
+<link rel="stylesheet" href="resources/montserrat.css" />
+
+<script src="https://unpkg.com/socket.io-client@4.1.2/dist/socket.io.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/gh/explosion-scratch/popup@v1.0.2/popup.js"></script>
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/gh/explosion-scratch/popup@v1.0.2/popup.css"
+/>
+
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.7/tailwind.min.css"
+/>
+<script src="https://unpkg.com/vue@3"></script>
+
+<script src="https://gitcdn.link/repo/polonel/SnackBar/master/dist/snackbar.min.js"></script>
+<link
+  rel="stylesheet"
+  href="https://gitcdn.link/repo/polonel/SnackBar/master/dist/snackbar.min.css"
+/>
+
+<div id="app">
+  <transition name="scaleY" mode="out-in">
+    <div v-if="!clients.length" class="text-center">
+      <transition name="scaleY" mode="out-in">
+        <h2 id="no_clients" class="italic font-extralight" :key="message">
+          {{message}}
+        </h2>
+      </transition>
+    </div>
+  </transition>
+  <transition name="fade" mode="out-in">
+    <h2 v-if="clients.length" id="title">
+      Drag a file to a device to upload it
+    </h2>
+  </transition>
+  <transition name="fade" mode="out-in">
+    <div id="container" v-if="clients.length">
+      <transition name="scale" mode="out-in">
+        <span
+          v-for="client in clients"
+          :key="client.id"
+          :data-id="client.id"
+          class="capitalize"
+          @click="upload_to_client($event)"
+        >
+          {{client.name}}
+        </span>
+      </transition>
+    </div>
+  </transition>
+</div>
+<input
+  id="fileInput"
+  type="file"
+  onchange="fileInputChange(this)"
+  style="visibility: hidden; display: none"
+/>
+<style>
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 1s ease;
+  }
+
+  .fade-enter-from,
+  .fade-leave-to {
+    opacity: 0;
+  }
+  .scale-enter-active,
+  .scale-leave-active {
+    transform-origin: top;
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .scale-enter-to,
+  .scale-leave-from {
+    transform: scaleX(1);
+  }
+
+  .scale-enter-from,
+  .scale-leave-to {
+    transform: scaleX(0);
+  }
+
+  .scaleY-enter-active,
+  .scaleY-leave-active {
+    transform-origin: top;
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .scaleY-enter-to,
+  .scaleY-leave-from {
+    transform: scaleY(1);
+  }
+
+  .scaleY-enter-from,
+  .scaleY-leave-to {
+    transform: scaleY(0);
+  }
+</style>
+<script>
+  if (!navigator.onLine) {
+    offline();
+  }
+  window.addEventListener("online", online);
+  window.addEventListener("offline", offline);
+
+  const opts = {
+    pos: "bottom-right",
+    textColor: "#ccc",
+    actionTextColor: "#383e61",
+    backgroundColor: "#0d0e14",
+    actionText: "Ok!",
+  };
+  function uploadNotice() {
+    Snackbar.show({ text: "Sent your file! ✈", ...opts });
+  }
+  function offline() {
+    Snackbar.show({
+      text: "🔴 You're currently offline. Most functions of this app will not work.",
+      ...opts,
+    });
+  }
+  function online() {
+    Snackbar.show({ text: "🟢 Back online again!", ...opts });
+  }
+  function decryptingNotice() {
+    Snackbar.show({ text: "🔑 Decrypting your file...", ...opts });
+  }
+  function encryptingNotice() {
+    Snackbar.show({ text: "🔒 Encrypting your file...", ...opts });
+  }
+  function done() {
+    Snackbar.show({ text: "Done! 🎉", ...opts });
+  }
+  function publicKeyNotice() {
+    Snackbar.show({
+      text: "Generating a public key to encrypt your files 😃",
+      ...opts,
+    });
+  }
+</script>
+<script src="main.js"></script>
+<style>
+  * {
+    font-family: "Montserrat", sans-serif;
+  }
+  #download_link {
+    color: #bdc2e4;
+    width: 94%;
+    margin: 10px auto;
+    display: block;
+    padding: 15px;
+    text-align: center;
+    border-radius: 10px;
+    transition: opacity 0.3s ease;
+    background: #0d0e14;
+    box-shadow: 5px 5px 10px #060609, -5px -5px 10px #14161f;
+  }
+  #download_link:active {
+    background: #0d0e14;
+    box-shadow: inset 5px 5px 10px #060609, inset -5px -5px 10px #14161f;
+  }
+
+  #popup {
+    background: #0d0e14;
+    box-shadow: 0px 0px 10px #191b27;
+    color: white;
+    width: 70vw;
+    max-width: 500px;
+  }
+  #popup button {
+    background: #191b27;
+    border: none;
+  }
+  #popup-bg {
+    filter: none !important;
+    backdrop-filter: blur(3px);
+  }
+  #popup button:hover {
+    background: #191b27;
+  }
+  #popup-title {
+    font-weight: 600;
+    text-align: center;
+    font-size: 1.1rem;
+  }
+  #popup input {
+    background: #0d0e14;
+    border-color: #222;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  #popup input:focus {
+    box-shadow: 0 0 5px 2px #191b27;
+  }
+  #popup button:not(:disabled):hover {
+    background: #222536;
+  }
+
+  body {
+    text-align: center;
+    background: #0d0e14;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #b0b8ca;
+  }
+
+  [data-id] {
+    margin: 20px;
+    font-weight: 300;
+    cursor: pointer;
+    text-align: center;
+    height: 120px;
+    width: 120px;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20%;
+    background: #0d0e14;
+    box-shadow: 20px 20px 60px #060609, -20px -20px 60px #14161f;
+    color: #ccc;
+  }
+  #title {
+    position: absolute;
+    font-style: italic;
+    bottom: 20px;
+    left: 50%;
+    transform: translate(-50%);
+  }
+  #container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50vw;
+  }
+  [data-id]:hover {
+    background: linear-gradient(145deg, #0c0d12, #0e0f15);
+    box-shadow: 20px 20px 60px #060609, -20px -20px 60px #14161f;
+  }
+  /* dragging */
+  [data-id][dragging] {
+    background: linear-gradient(145deg, #0f1018, #0d0e14);
+    box-shadow: 20px 20px 60px #060609, -20px -20px 60px #161823;
+    animation: wiggle 1s infinite linear;
+  }
+  [data-id][uploading] {
+    border: 2px solid #404566;
+    animation: border 1s infinite linear;
+  }
+  @keyframes border {
+    0% {
+      border-color: #0000;
+    }
+    50% {
+      border-color: #404566;
+    }
+    100% {
+      border-color: #0000;
+    }
+  }
+  @keyframes wiggle {
+    10% {
+      transform: rotate(10deg);
+    }
+    20% {
+      transform: rotate(-10deg);
+    }
+    30% {
+      transform: rotate(10deg);
+    }
+    40% {
+      transform: rotate(-10deg);
+    }
+    50% {
+      transform: rotate(10deg);
+    }
+    60% {
+      transform: rotate(-10deg);
+    }
+    70% {
+      transform: rotate(10deg);
+    }
+    80% {
+      transform: rotate(-10deg);
+    }
+    90% {
+      transform: rotate(10deg);
+    }
+    100% {
+      transform: rotate(-10deg);
+    }
+  }
+</style>
