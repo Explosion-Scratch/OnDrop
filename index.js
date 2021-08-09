@@ -31,7 +31,6 @@ const mime = require("mime-types");
 
 if (fs.existsSync(`${__dirname}/uploads`)) {
   const files = fs.readdirSync(`${__dirname}/uploads`);
-  console.log(files);
 
   files.forEach((file) => {
     fs.unlinkSync(`${__dirname}/uploads/${file}`);
@@ -51,9 +50,7 @@ io.on("connection", (socket) => {
   var _id = id();
   var name = id();
   var files = [];
-  console.log("a user connected");
   socket.on("disconnect", () => {
-    console.log("user disconnected");
     connections = connections.filter((i) => i.id !== _id);
     socket.to(ip).emit("client left", { name, id: _id });
 
@@ -67,12 +64,6 @@ io.on("connection", (socket) => {
     keys[_id] = key;
   });
   socket.on("get public key", ({ id }, callback) => {
-    console.log(
-      Object.keys(keys),
-      connections.map((i) => i.id),
-      `Me: ${_id}`,
-      `Requested: ${id}`
-    );
     if (!keys[id]) callback({ error: true, message: "Key not found" });
     callback({ error: false, key: keys[id] });
   });
