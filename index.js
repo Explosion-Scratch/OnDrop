@@ -1,7 +1,7 @@
 const express = require("express");
 var connections = [];
 const app = express();
-const path = require("path")
+const path = require("path");
 const { v4: id } = require("uuid");
 const fs = require("fs");
 const http = require("http");
@@ -10,10 +10,10 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 
 // set up rate limiter: maximum of five requests per minute
-var RateLimit = require('express-rate-limit');
+var RateLimit = require("express-rate-limit");
 var limiter = new RateLimit({
-  windowMs: 1*60*1000, // 1 minute
-  max: 100
+  windowMs: 1 * 60 * 1000, // 1 minute
+  max: 100,
 });
 
 // apply rate limiter to all requests
@@ -126,7 +126,11 @@ app.get("/dl/:id", (req, res) => {
   var error = false;
   try {
     res.json(
-      JSON.parse(fs.readFileSync(path.join(__dirname, "uploads", sanitize(req.params.id))))
+      JSON.parse(
+        fs.readFileSync(
+          path.join(__dirname, "uploads", sanitize(req.params.id))
+        )
+      )
     );
   } catch (e) {
     res.json({ error: true, message: "No such file exists" });

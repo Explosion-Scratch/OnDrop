@@ -239,7 +239,7 @@ socket.on("got file", async (info) => {
 
 function param(name) {
   var params = new URLSearchParams(location.search);
-	return params.get(name);
+  return params.get(name);
 }
 
 var s = document.createElement("script");
