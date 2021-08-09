@@ -38,7 +38,8 @@
 ![image](https://user-images.githubusercontent.com/61319150/128540231-9effe93b-b6b9-43f2-b642-3a7e9a3cc637.png)
 ![image](https://user-images.githubusercontent.com/61319150/128540309-69669f7d-4a4f-40ee-91e0-09826a959ba5.png)
 ![image](https://user-images.githubusercontent.com/61319150/128779150-01b5c5ce-79d9-4fc5-be09-c2e2a3b8c927.png)
-(Thank you thank you thank you)
+(Thank you thank you thank you!!! :heart:)
+
 # FAQ
 
 (Not actually asked frequently, this is just stuff that people may ask if they ever see this project and are interested in it :weary:)
@@ -85,8 +86,8 @@ It's open source, so sure, but give credit :neutral_face:
 - You can drag and drop not just files, but images and text from webpages as well!
 - Now installable as a PWA!
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTY1ODE1NzEyMiwtMTE1NDAwNjA3MywtMj
-kxMjA5MzksLTExNzE2MTM0MTcsLTEwMjA4NTY1OTUsLTE4MTY3
-MDcyOTQsLTIxMTM1ODgyMjcsMTI5MzIyNDcwMywtNTU0OTExOD
-gyXX0=
+eyJoaXN0b3J5IjpbOTQ4MjIxNDk1LC0xMTU0MDA2MDczLC0yOT
+EyMDkzOSwtMTE3MTYxMzQxNywtMTAyMDg1NjU5NSwtMTgxNjcw
+NzI5NCwtMjExMzU4ODIyNywxMjkzMjI0NzAzLC01NTQ5MTE4OD
+JdfQ==
 -->
