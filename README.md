@@ -78,7 +78,7 @@ Came to me when I realized that multiple people can have the same IP address, th
 
 ## Can I use your code?
 
-It's open source, so sure, but give credit :neutral_face:
+See [`LICENSE.md`](https://github.com/Explosion-Scratch/ondrop/blob/master/LICENSE.md)
 
 ## Tips and tricks! Gimme some!
 
