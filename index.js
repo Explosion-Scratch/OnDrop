@@ -1,6 +1,7 @@
 const express = require("express");
 var connections = [];
 const app = express();
+const path = require("path")
 const { v4: id } = require("uuid");
 const fs = require("fs");
 const http = require("http");
@@ -133,7 +134,7 @@ app.get("/dl/:id", (req, res) => {
   var error = false;
   try {
     res.json(
-      JSON.parse(fs.readFileSync(`${__dirname}/uploads/${req.params.id}`))
+      JSON.parse(fs.readFileSync(path.join(__dirname, "uploads", req.params.id)))
     );
   } catch (e) {
     res.json({ error: true, message: "No such file exists" });
