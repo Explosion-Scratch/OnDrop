@@ -238,12 +238,8 @@ socket.on("got file", async (info) => {
 });
 
 function param(name) {
-  name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-  var regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
-  var results = regex.exec(location.search);
-  return results === null
-    ? ""
-    : decodeURIComponent(results[1].replace(/\+/g, " "));
+  var params = new URLSearchParams(location.search);
+	return params.get(name);
 }
 
 var s = document.createElement("script");
