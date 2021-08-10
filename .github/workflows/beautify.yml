@@ -2,6 +2,7 @@ name: Prettier
 
 # This action works with pull requests and pushes
 on:
+  workflow_dispatch:
   pull_request:
   push:
     branches:
