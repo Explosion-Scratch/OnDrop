@@ -149,6 +149,10 @@
     backgroundColor: "#0d0e14",
     actionText: "Ok!",
   };
+  const noShowOpts = {
+    showAction: false, 
+    duration: 10000,
+  }
   function uploadNotice() {
     Snackbar.show({ text: "Sent your file! ✈", ...opts });
   }
@@ -162,10 +166,10 @@
     Snackbar.show({ text: "🟢 Back online again!", ...opts });
   }
   function decryptingNotice() {
-    Snackbar.show({ text: "🔑 Decrypting your file...", ...opts });
+    Snackbar.show({ text: "🔑 Decrypting your file...", ...noShowOpts, ...opts });
   }
   function encryptingNotice() {
-    Snackbar.show({ text: "🔒 Encrypting your file...", ...opts });
+    Snackbar.show({ text: "🔒 Encrypting your file...", ...noShowOpts, ...opts });
   }
   function done() {
     Snackbar.show({ text: "Done! 🎉", ...opts });
@@ -173,6 +177,7 @@
   function publicKeyNotice() {
     Snackbar.show({
       text: "Generating a public key to encrypt your files 😃",
+      ...noShowOpts,
       ...opts,
     });
   }
