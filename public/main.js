@@ -5,16 +5,21 @@ if ("serviceWorker" in navigator) {
     .catch((err) => console.log("Service worker not registered", err));
 }
 
-const hash = function(str, seed = 0) {
-    let h1 = 0xdeadbeef ^ seed, h2 = 0x41c6ce57 ^ seed;
-    for (let i = 0, ch; i < str.length; i++) {
-        ch = str.charCodeAt(i);
-        h1 = Math.imul(h1 ^ ch, 2654435761);
-        h2 = Math.imul(h2 ^ ch, 1597334677);
-    }
-    h1 = Math.imul(h1 ^ (h1>>>16), 2246822507) ^ Math.imul(h2 ^ (h2>>>13), 3266489909);
-    h2 = Math.imul(h2 ^ (h2>>>16), 2246822507) ^ Math.imul(h1 ^ (h1>>>13), 3266489909);
-    return (4294967296 * (2097151 & h2) + (h1>>>0)).toString(36);
+const hash = function (str, seed = 0) {
+  let h1 = 0xdeadbeef ^ seed,
+    h2 = 0x41c6ce57 ^ seed;
+  for (let i = 0, ch; i < str.length; i++) {
+    ch = str.charCodeAt(i);
+    h1 = Math.imul(h1 ^ ch, 2654435761);
+    h2 = Math.imul(h2 ^ ch, 1597334677);
+  }
+  h1 =
+    Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^
+    Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+  h2 =
+    Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^
+    Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+  return (4294967296 * (2097151 & h2) + (h1 >>> 0)).toString(36);
 };
 
 var app = Vue.createApp({
@@ -168,15 +173,15 @@ fetch("https://icanhazip.com/")
     //Wait for key to be generated.
     await cryptoLoadPromise;
     await c.key();
-		var stuff = {
+    var stuff = {
       name: localStorage.getItem("name"),
       userAgent: navigator.userAgent,
     };
-		if (param("ip")){
-			stuff.hash = param("ip")
-		} else {
-			stuff.addr = ip;
-		}
+    if (param("ip")) {
+      stuff.hash = param("ip");
+    } else {
+      stuff.addr = ip;
+    }
     socket.emit("ip", stuff);
     ready();
   });
@@ -187,8 +192,8 @@ function ready() {
   // socket.emit("file", {file: blob, type: blob.type})
 }
 socket.on("joined room", (_) => {
-	console.log("Joined room: ", _);
-	history.replaceState({}, "OnDrop", `?ip=${_}`)
+  console.log("Joined room: ", _);
+  history.replaceState({}, "OnDrop", `?ip=${_}`);
 });
 socket.on("new client", (_) => {
   console.log("New client: ", _);
