@@ -39,15 +39,15 @@ var app = Vue.createApp({
     upload_to_client: async (event) => {
       var t = event.target;
       app.justClicked = t.getAttribute("data-id");
-			file = await getFile()
+      file = await getFile();
       console.log("File input changed: ", file);
-			socket.emit("uploading", { id });
-			socket.emit("file", {
-				file: await c.encrypt({ file, to: app.justClicked }),
-				name: file.name,
-				type: file.type,
-				to: app.justClicked,
-			});
+      socket.emit("uploading", { id });
+      socket.emit("file", {
+        file: await c.encrypt({ file, to: app.justClicked }),
+        name: file.name,
+        type: file.type,
+        to: app.justClicked,
+      });
     },
   },
   computed: {
@@ -75,7 +75,6 @@ setInterval(() => {
     app.messageIndex = 0;
   }
 }, 5000);
-
 
 document.onpaste = async function (event) {
   var items = (event.clipboardData || event.originalEvent.clipboardData).items;
@@ -186,28 +185,32 @@ function ready() {
 }
 socket.on("joined room", async (_) => {
   console.log("Joined room: ", _);
-	if (!param("file_picker")) {
-		history.replaceState({}, "OnDrop", `?ip=${_}`);
-		return;
-	}
-	await new Promise(resolve => {
-		alert({title: "Click 'upload' to upload a file", text: "This dialog shows up because '?file_picker' is in the URL.", buttontext: "Upload"}).then(resolve);
-		document.querySelector("#popup-close").style.width = "100%"
-	})
-	var file = await getFile();
-	console.log("File ")
-	for (let item of document.querySelectorAll("[data-id]")) {
-      var id = item.getAttribute("data-id");
-      item.setAttribute("uploading", "");
-      socket.emit("uploading", { id });
-      socket.emit("file", {
-        file: await c.encrypt({ file, to: id }),
-        name: file.name,
-        type: file.type,
-        to: id,
-      });
-    }
-	history.replaceState({}, "OnDrop", `?ip=${_}`);
+  if (!param("file_picker")) {
+    history.replaceState({}, "OnDrop", `?ip=${_}`);
+    return;
+  }
+  await new Promise((resolve) => {
+    alert({
+      title: "Click 'upload' to upload a file",
+      text: "This dialog shows up because '?file_picker' is in the URL.",
+      buttontext: "Upload",
+    }).then(resolve);
+    document.querySelector("#popup-close").style.width = "100%";
+  });
+  var file = await getFile();
+  console.log("File ");
+  for (let item of document.querySelectorAll("[data-id]")) {
+    var id = item.getAttribute("data-id");
+    item.setAttribute("uploading", "");
+    socket.emit("uploading", { id });
+    socket.emit("file", {
+      file: await c.encrypt({ file, to: id }),
+      name: file.name,
+      type: file.type,
+      to: id,
+    });
+  }
+  history.replaceState({}, "OnDrop", `?ip=${_}`);
 });
 socket.on("new client", (_) => {
   console.log("New client: ", _);
@@ -304,16 +307,16 @@ function dataURItoBlob(dataURI) {
   }
   return URL.createObjectURL(new Blob([new Uint8Array(array)], { type: mime }));
 }
-async function getFile(){
-    return new Promise(resolve => {
-        var e = document.createElement("input");
-        e.style.display = "none";
-        e.type = "file";
-        document.body.appendChild(e);
-        e.onchange = (event) => {
-            resolve(e.files[0]);
-            e.remove();
-        }
-        e.click();
-    });
+async function getFile() {
+  return new Promise((resolve) => {
+    var e = document.createElement("input");
+    e.style.display = "none";
+    e.type = "file";
+    document.body.appendChild(e);
+    e.onchange = (event) => {
+      resolve(e.files[0]);
+      e.remove();
+    };
+    e.click();
+  });
 }
