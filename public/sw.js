@@ -18,35 +18,36 @@ self.addEventListener("fetch", (event) => {
   }
   if (event.request.url.includes("socket.io"))
     return event.respondWith(fetch(event.request));
-	var data;
+  var data;
   event.respondWith(
     (async () => {
       const formData = await event.request.clone().formData();
-			data = Object.fromEntries(formData.entries())
+      data = Object.fromEntries(formData.entries());
       console.log(data);
       return fetch("index.html");
     })()
   );
-	event.waitUntil(async function() {
-    // Exit early if we don't have access to the client.
-    // Eg, if it's cross-origin.
-    if (!event.clientId) return;
+  event.waitUntil(
+    (async function () {
+      // Exit early if we don't have access to the client.
+      // Eg, if it's cross-origin.
+      if (!event.clientId) return;
 
-    // Get the client.
-    const client = await clients.get(event.clientId);
-    // Exit early if we don't get the client.
-    // Eg, if it closed.
-    if (!client) return;
+      // Get the client.
+      const client = await clients.get(event.clientId);
+      // Exit early if we don't get the client.
+      // Eg, if it closed.
+      if (!client) return;
 
-    // Send a message to the client.
-		if (!data.file){
-			console.log('No file in data', data);
-		}
-    client.postMessage({
-      file: data.file
-    });
-
-  }());
+      // Send a message to the client.
+      if (!data.file) {
+        console.log("No file in data", data);
+      }
+      client.postMessage({
+        file: data.file,
+      });
+    })()
+  );
 });
 
 // activate event
