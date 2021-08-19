@@ -5,6 +5,9 @@
     "background_color": "#0d0e14",
 		"start_url": "./",
 		"scope": ".",
+  	"orientation": "any",
+		"lang": "en",
+		"categories": ["productivity", "utilities"],
 		"share_target": {
 			"action": "/?share_target",
 			"method": "POST",
@@ -15,8 +18,8 @@
 				"url": "url",
 				"files": [
 					{
-						"name": "files",
-						"accept": "*/*"
+						"name": "file",
+						"accept": ["image/*"]
 					}
 				]
 			}
