@@ -18,11 +18,13 @@ self.addEventListener("fetch", (event) => {
   }
   if (event.request.url.includes("socket.io"))
     return event.respondWith(fetch(event.request));
-	var data;
+	
+	var dataRes;
+	var data = new Promise(resolve => (dataRes = resolve));
   event.respondWith(
     (async () => {
       const formData = await event.request.clone().formData();
-			data = Object.fromEntries(formData.entries())
+			dataRes(Object.fromEntries(formData.entries()))
       console.log(data);
       return fetch("index.html");
     })()
@@ -39,6 +41,7 @@ self.addEventListener("fetch", (event) => {
     if (!client) return;
 
     // Send a message to the client.
+		data = await data;
 		if (!data.file){
 			console.log('No file in data', data);
 		}
