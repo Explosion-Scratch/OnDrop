@@ -5,7 +5,7 @@
 <h1 align=center>⚡ OnDrop ⚡</h1>
 <hr>
 <div align=center><img src=https://user-images.githubusercontent.com/61319150/128249920-2ce97495-1f5d-41df-b439-82e96c3c2db1.gif></div><br>
-<div align=center><i>A lightning fast, simple and easy alternative to airdrop!</i></div>
+<div align=center><i>A lightning fast, secure and encrypted way to share files!</i></div>
 <hr>
 
 ## Features:
@@ -94,8 +94,8 @@ See [`LICENSE.md`](https://github.com/Explosion-Scratch/ondrop/blob/master/LICEN
 </i></div>
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNzYyNTk3NDUzLC01NjA5MDY4NTksOTQ4Mj
-IxNDk1LC0xMTU0MDA2MDczLC0yOTEyMDkzOSwtMTE3MTYxMzQx
-NywtMTAyMDg1NjU5NSwtMTgxNjcwNzI5NCwtMjExMzU4ODIyNy
-wxMjkzMjI0NzAzLC01NTQ5MTE4ODJdfQ==
+eyJoaXN0b3J5IjpbMjI0Mjg0MTMzLDc2MjU5NzQ1MywtNTYwOT
+A2ODU5LDk0ODIyMTQ5NSwtMTE1NDAwNjA3MywtMjkxMjA5Mzks
+LTExNzE2MTM0MTcsLTEwMjA4NTY1OTUsLTE4MTY3MDcyOTQsLT
+IxMTM1ODgyMjcsMTI5MzIyNDcwMywtNTU0OTExODgyXX0=
 -->
