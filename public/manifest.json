@@ -28,7 +28,7 @@
 			{
 					"name": "Upload",
 					"description": "Upload a file to all clients",
-					"url": "/file_upload=1"
+					"url": "/?file_upload=1"
 			}
 		],
 		"theme_color": "#0d0e14",
