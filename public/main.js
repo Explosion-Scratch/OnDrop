@@ -3,6 +3,11 @@ if ("serviceWorker" in navigator) {
     .register("sw.js")
     .then((reg) => console.log("Service worker registered"))
     .catch((err) => console.log("Service worker not registered", err));
+	navigator.serviceWorker.addEventListener('message', event => {
+		// Set this then detection is done once we join a room.
+		window["SERVICE_WORKER_FILE"] = event.data.file;
+		console.log("Got service worker file", event.data.file)
+	});
 }
 
 const hash = function (str, seed = 0) {
@@ -197,8 +202,9 @@ socket.on("joined room", async (_) => {
     }).then(resolve);
     document.querySelector("#popup-close").style.width = "100%";
   });
-  var file = await getFile();
-  console.log("File ");
+	// If we get file from service worker.
+  var file = window["SERVICE_WORKER_FILE"] || await getFile();
+  console.log("File ", file);
   for (let item of document.querySelectorAll("[data-id]")) {
     var id = item.getAttribute("data-id");
     item.setAttribute("uploading", "");
