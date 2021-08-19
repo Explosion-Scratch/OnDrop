@@ -11,24 +11,22 @@ const assets = [
   "/manifest.json",
 ];
 
-self.addEventListener("fetch", (event) => {
-  if (event.request.method !== "POST") {
+
+self.addEventListener('fetch', event => {
+  if (event.request.method !== 'POST') {
     event.respondWith(fetch(event.request));
     return;
   }
-  if (event.request.url.includes("socket.io"))
-    return event.respondWith(fetch(event.request));
-  event.respondWith(
-    (async () => {
-      const formData = await event.request.clone().formData();
-      const link = formData.get("url") || "";
-      for (var pair of formData.entries()) {
+	if (event.request.url.includes("socket.io")) return event.respondWith(fetch(event.request));
+  event.respondWith((async () => {
+    const formData = await event.request.clone().formData();
+    for(var pair of formData.entries()){
         console.log(pair[0], pair[1]);
-      }
-      return new Response("Bookmark saved: " + link);
-    })()
-  );
+    }
+    return new Response(fetch("index.html"));
+  })());
 });
+
 
 // activate event
 self.addEventListener("activate", (evt) => {
