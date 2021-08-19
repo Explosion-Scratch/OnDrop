@@ -50,7 +50,8 @@ self.addEventListener("fetch", (event) => {
       file: data.file
     });
 
-  }());
+  }())
+	);
 });
 
 // activate event
