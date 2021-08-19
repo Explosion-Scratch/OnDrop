@@ -24,7 +24,7 @@ self.addEventListener("fetch", (event) => {
       for (var pair of formData.entries()) {
         console.log(pair[0], pair[1]);
       }
-      return new Response(fetch("index.html"));
+      return fetch("index.html");
     })()
   );
 });
