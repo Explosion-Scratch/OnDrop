@@ -190,7 +190,7 @@ function ready() {
 }
 socket.on("joined room", async (_) => {
   console.log("Joined room: ", _);
-  if (!param("file_picker")) {
+  if (!(window["SERVICE_WORKER_FILE"] param("file_picker"))) {
     history.replaceState({}, "OnDrop", `?ip=${_}`);
     return;
   }
