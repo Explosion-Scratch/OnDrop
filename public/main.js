@@ -210,7 +210,7 @@ socket.on("joined room", async (_) => {
   joinedTime = Date.now();
   console.log("Joined room: ", _);
   if (!param("file_picker")) {
-    history.replaceState({}, "OnDrop", `?ip=${_}`);
+    history.replaceState({}, "OnDrop", `?ip=${_}${param("share_target") ? `&share_target=${escape(param("share_target"))}`}`);
     return;
   }
   await new Promise((resolve) => {
@@ -235,10 +235,10 @@ socket.on("joined room", async (_) => {
       to: id,
     });
   }
-  history.replaceState({}, "OnDrop", `?ip=${_}`);
+  history.replaceState({}, "OnDrop", `?ip=${_}${param("share_target") ? `&share_target=${escape(param("share_target"))}`}`);
 });
 socket.on("new client", async (_) => {
-  app.clients = [...app.clients, _];
+	app.clients = [...app.clients, _];
 
   console.log("New client: ", _);
   if (!param("share_target"))
