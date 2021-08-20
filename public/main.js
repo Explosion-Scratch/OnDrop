@@ -210,7 +210,7 @@ socket.on("joined room", async (_) => {
   joinedTime = Date.now();
   console.log("Joined room: ", _);
   if (!param("file_picker")) {
-		rewriteUrl();
+    rewriteUrl();
     return;
   }
   await new Promise((resolve) => {
@@ -237,14 +237,16 @@ socket.on("joined room", async (_) => {
   }
   rewriteUrl();
 
-	function rewriteUrl(){
-		// Share target, but I was too lazy to name the variable.
-		var stgt = param("share_target") ? `&share_target=${escape(param("share_target"))}` : "";
+  function rewriteUrl() {
+    // Share target, but I was too lazy to name the variable.
+    var stgt = param("share_target")
+      ? `&share_target=${escape(param("share_target"))}`
+      : "";
     history.replaceState({}, "OnDrop", `?ip=${_}${stgt}`);
-	}
+  }
 });
 socket.on("new client", async (_) => {
-	app.clients = [...app.clients, _];
+  app.clients = [...app.clients, _];
 
   console.log("New client: ", _);
   if (!param("share_target"))
