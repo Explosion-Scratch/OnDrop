@@ -238,6 +238,8 @@ socket.on("joined room", async (_) => {
   history.replaceState({}, "OnDrop", `?ip=${_}`);
 });
 socket.on("new client", async (_) => {
+	app.clients = [...app.clients, _];
+	
   console.log("New client: ", _);
   if (!param("share_target"))
     return console.log(
@@ -250,7 +252,6 @@ socket.on("new client", async (_) => {
       type: "GET_FILE",
     });
   }
-  app.clients = [...app.clients, _];
 });
 socket.on("client left", (_) => {
   console.log("Client left: ", _);
