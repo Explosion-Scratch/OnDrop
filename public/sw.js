@@ -52,7 +52,7 @@ async function handler(event) {
       [
         new Blob([
           `${data.url ? `${data.url}\n\n` : ""}${data.text || ""}${
-            data.url && data.text
+            data.url || data.text
               ? ""
               : "No content transfered (theoretically this should never happen)"
           }`,
