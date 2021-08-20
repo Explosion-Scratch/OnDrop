@@ -9,7 +9,7 @@
 		"lang": "en",
 		"categories": ["productivity", "utilities"],
 		"share_target": {
-			"action": "/?share_target",
+			"action": "/?share_target=true",
 			"method": "POST",
 			"enctype": "multipart/form-data",
 			"params": {
@@ -28,7 +28,8 @@
 			{
 					"name": "Upload",
 					"description": "Upload a file to all clients",
-					"url": "/?file_upload=1"
+					"url": "/?file_upload=1",
+					"icons": [{ "src": "/images/upload_icon.png", "sizes": "192x192" }]
 			}
 		],
 		"theme_color": "#0d0e14",
