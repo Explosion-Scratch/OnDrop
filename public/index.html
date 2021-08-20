@@ -153,40 +153,43 @@
     showAction: false,
     duration: 10000,
   };
-	function notice(text){
-		Snackbar.show({text, ...opts, duration: 5000})
-	}
+  function notice(text) {
+    Snackbar.show({ text, ...opts, duration: 5000 });
+  }
   function uploadNotice() {
     Snackbar.show({ text: "Sent your file! ✈", ...opts });
-		notification("Sent your file! ✈", "Sent!", "sent");
+    notification("Sent your file! ✈", "Sent!", "sent");
   }
-	function notification(body, title, icon = "/images/OnDrop-144.png"){
-		if (icon == "upload"){
-			icon = "/images/upload_icon.png"
-		}
-		if (icon === "done"){
-			icon = `/images/${icon}.png`
-		}
-		if (icon === "encrypt" || icon === "decrypt"){
-			icon = `/images/${icon.replace("decrypt", "encrypt")}.png`
-		}
-		if (icon === "send" || icon === "sent"){
-			icon = `/images/${icon.replace("t", "d")}.png`			
-		}
-		if (Notification.permission === "granted"){
-			new Notification(title, {body, icon});
-		}
-	}
+  function notification(body, title, icon = "/images/OnDrop-144.png") {
+    if (icon == "upload") {
+      icon = "/images/upload_icon.png";
+    }
+    if (icon === "done") {
+      icon = `/images/${icon}.png`;
+    }
+    if (icon === "encrypt" || icon === "decrypt") {
+      icon = `/images/${icon.replace("decrypt", "encrypt")}.png`;
+    }
+    if (icon === "send" || icon === "sent") {
+      icon = `/images/${icon.replace("t", "d")}.png`;
+    }
+    if (Notification.permission === "granted") {
+      new Notification(title, { body, icon });
+    }
+  }
   function offline() {
     Snackbar.show({
       text: "🔴 You're currently offline. Most functions of this app will not work.",
       ...opts,
     });
-		notification("🔴 You're currently offline. Most functions of this app will not work.", "Offline!")
+    notification(
+      "🔴 You're currently offline. Most functions of this app will not work.",
+      "Offline!"
+    );
   }
   function online() {
     Snackbar.show({ text: "🟢 Back online again!", ...opts });
-		notification("Back online again!", "Online again!", "done")
+    notification("Back online again!", "Online again!", "done");
   }
   function decryptingNotice() {
     Snackbar.show({
@@ -194,7 +197,7 @@
       ...noShowOpts,
       ...opts,
     });
-			notification("Decrypting your file", "Decrypting", "decrypt")
+    notification("Decrypting your file", "Decrypting", "decrypt");
   }
   function encryptingNotice() {
     Snackbar.show({
@@ -202,11 +205,11 @@
       ...noShowOpts,
       ...opts,
     });
-		notification("Encrypting your file...", "Encrypting", "encrypt")
+    notification("Encrypting your file...", "Encrypting", "encrypt");
   }
   function done() {
     Snackbar.show({ text: "Done! 🎉", ...opts });
-		notification("Done! 🎉", "Done!", "done")
+    notification("Done! 🎉", "Done!", "done");
   }
   function publicKeyNotice() {
     Snackbar.show({
