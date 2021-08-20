@@ -19,7 +19,7 @@
 				"files": [
 					{
 						"name": "file",
-						"accept": ["image/*"]
+						"accept": ["image/*", "text/*", "application/*"]
 					}
 				]
 			}

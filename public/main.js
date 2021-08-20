@@ -3,11 +3,28 @@ if ("serviceWorker" in navigator) {
     .register("sw.js")
     .then((reg) => console.log("Service worker registered"))
     .catch((err) => console.log("Service worker not registered", err));
-  navigator.serviceWorker.addEventListener("message", (event) => {
-    // Set this then detection is done once we join a room.
-    window["SERVICE_WORKER_FILE"] = event.data.file;
-    console.log("Got service worker file", event.data.file);
-  });
+	
+	navigator.serviceWorker.ready.then((r) => {
+		console.log("Service worker ready", r)
+		navigator.serviceWorker.addEventListener("message", async (event) => {
+			// Set this then detection is done once we join a room.
+			window["SERVICE_WORKER_FILE"] = event.data.file;
+			console.log("Got service worker file", event.data);
+			var { file }= event.data
+			console.log("File ", file);
+			for (let item of document.querySelectorAll("[data-id]")) {
+				var id = item.getAttribute("data-id");
+				item.setAttribute("uploading", "");
+				socket.emit("uploading", { id });
+				socket.emit("file", {
+					file: await c.encrypt({ file, to: id }),
+					name: file.name,
+					type: file.type,
+					to: id,
+				});
+			}
+		});
+	})
 }
 
 const hash = function (str, seed = 0) {
@@ -188,9 +205,11 @@ function ready() {
   // TODO: Add person for destination
   // socket.emit("file", {file: blob, type: blob.type})
 }
+var joinedTime = -1;
 socket.on("joined room", async (_) => {
+	joinedTime = Date.now()
   console.log("Joined room: ", _);
-  if (!(window["SERVICE_WORKER_FILE"] param("file_picker"))) {
+  if (!param("file_picker")) {
     history.replaceState({}, "OnDrop", `?ip=${_}`);
     return;
   }
@@ -203,7 +222,7 @@ socket.on("joined room", async (_) => {
     document.querySelector("#popup-close").style.width = "100%";
   });
   // If we get file from service worker.
-  var file = window["SERVICE_WORKER_FILE"] || (await getFile());
+  var file = await getFile();
   console.log("File ", file);
   for (let item of document.querySelectorAll("[data-id]")) {
     var id = item.getAttribute("data-id");
@@ -218,8 +237,16 @@ socket.on("joined room", async (_) => {
   }
   history.replaceState({}, "OnDrop", `?ip=${_}`);
 });
-socket.on("new client", (_) => {
+socket.on("new client", async (_) => {
   console.log("New client: ", _);
+	if (Date.now() - joinedTime > 0 && Date.now() - joinedTime < 15000){
+		console.log("Asking for file")
+		joinedTime = -1;
+		(await navigator.serviceWorker.ready).active.postMessage
+({
+			type: 'GET_FILE',
+		});
+	}
   app.clients = [...app.clients, _];
 });
 socket.on("client left", (_) => {
