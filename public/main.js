@@ -27,20 +27,22 @@ if ("serviceWorker" in navigator) {
   });
 }
 
-function notifs(){
-	if (Notification.permission !== "default") return;
-	notice("Grant access to notifications to get notifications when a file is sent or finishes uploading!");
+function notifs() {
+  if (Notification.permission !== "default") return;
+  notice(
+    "Grant access to notifications to get notifications when a file is sent or finishes uploading!"
+  );
 
-	Notification.requestPermission().then((result) => {
-		if (result === 'granted') {
-			notice("Thanks!")
-		} else {
-			notice("Ok, that's fine.")
-		}
-	});
+  Notification.requestPermission().then((result) => {
+    if (result === "granted") {
+      notice("Thanks!");
+    } else {
+      notice("Ok, that's fine.");
+    }
+  });
 }
 
-setTimeout(notifs, 10000)
+setTimeout(notifs, 10000);
 
 const hash = function (str, seed = 0) {
   let h1 = 0xdeadbeef ^ seed,
