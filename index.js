@@ -9,7 +9,7 @@ var sanitize = require("sanitize-filename");
 const server = http.createServer(app);
 const { Server } = require("socket.io");
 
-// set up rate limiter: maximum of five requests per minute
+// set up rate limiter: maximum of 100 requests per minute
 var RateLimit = require("express-rate-limit");
 var limiter = new RateLimit({
   windowMs: 1 * 60 * 1000, // 1 minute
