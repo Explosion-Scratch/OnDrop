@@ -45,8 +45,8 @@ function keyHandler(e) {
     console.log("Got key generated message", key);
     publicKeyPromiseRes(key);
     window.cryptWorker.removeEventListener("message", keyHandler);
-    //Show notice
-    done();
+    //Show notice but no notification
+    done(false);
   }
 }
 
