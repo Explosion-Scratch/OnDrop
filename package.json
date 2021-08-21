@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "commit": "git stash && npm i --save-dev prettier && git pull --force && git checkout stash -- . && prettier --write ./** public/* "
+    "commit": "git stash && git pull --force && git checkout stash -- . && prettier --write ./** public/* "
   },
   "keywords": [],
   "author": "",
