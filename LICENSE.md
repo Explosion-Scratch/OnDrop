@@ -112,6 +112,6 @@ For the avoidance of doubt, this Section [4](https://creativecommons.org/license
 2.  To the extent possible, if any provision of this Public License is deemed unenforceable, it shall be automatically reformed to the minimum extent necessary to make it enforceable. If the provision cannot be reformed, it shall be severed from this Public License without affecting the enforceability of the remaining terms and conditions.
 3.  No term or condition of this Public License will be waived and no failure to comply consented to unless expressly agreed to by the Licensor.
 4.  Nothing in this Public License constitutes or may be interpreted as a limitation upon, or waiver of, any privileges and immunities that apply to the Licensor or You, including from the legal processes of any jurisdiction or authority.
-<!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE5MDk4NjY2MjJdfQ==
--->
+    <!--stackedit_data:
+    eyJoaXN0b3J5IjpbLTE5MDk4NjY2MjJdfQ==
+    -->

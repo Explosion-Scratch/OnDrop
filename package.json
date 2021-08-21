@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "commit": "git stash && npm i --save-dev prettier && git pull --force && git checkout stash -- . && prettier --write ./** public/* "
   },
   "keywords": [],
   "author": "",
@@ -16,5 +16,8 @@
     "sanitize-filename": "^1.6.3",
     "socket.io": "^4.1.3",
     "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "prettier": "^2.3.2"
   }
 }
