@@ -3,7 +3,7 @@ description: File a bug report
 title: "[Bug]: "
 labels: [bug, triage]
 assignees:
-  - octocat
+  - Explosion-Scratch
 body:
   - type: markdown
     attributes:
@@ -26,16 +26,14 @@ body:
       value: "A bug happened!"
     validations:
       required: true
-  - type: dropdown
-    id: version
+  - type: checkboxes
+    id: modified
     attributes:
-      label: Version
-      description: What version of our software are you running?
+      label: Did you modify OnDrop in any way?
+      description: When this bug happened were using a modified or old version of OnDrop?
       options:
-        - 1.0.2 (Default)
-        - 1.0.3 (Edge)
-    validations:
-      required: true
+        - label: Check the box if you were
+          required: false
   - type: dropdown
     id: browsers
     attributes:
@@ -53,10 +51,10 @@ body:
       description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
       render: shell
   - type: checkboxes
-    id: terms
+    id: readme
     attributes:
-      label: Code of Conduct
-      description: By submitting this issue, you agree to follow our [Code of Conduct](https://example.com)
+      label: Read the README
+      description: Did you read the README.md file first? It has stuff that might help
       options:
-        - label: I agree to follow this project's Code of Conduct
+        - label: Check the box if you read it
           required: true
