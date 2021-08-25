@@ -11,6 +11,7 @@
 ## Features:
 
 - ✔️ Simple to use
+- 🔒 End to end encryption
 - ⚡ Quick
 - 🔥 Supports any device
 - 🚀 Easy
