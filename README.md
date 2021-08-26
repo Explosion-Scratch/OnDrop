@@ -11,6 +11,7 @@
 ## Features:
 
 - ✔️ Simple to use
+- 🔒 End to end encryption
 - ⚡ Quick
 - 🔥 Supports any device
 - 🚀 Easy
@@ -49,6 +50,7 @@
 
 - This doesn't track you, it's easy, you can share between platforms (Airdrop only works on macs & iPhones :computer:).
 - Most other services track you somehow.
+- OnDrop encrypts files end to end, this means that nobody but whoever you send your files can decrypt it! This includes the server itself! Even I can't see what files people are sending. This uses [RSA encryption](https://simple.wikipedia.org/wiki/RSA_algorithm).
 
 ## How does OnDrop work?
 
