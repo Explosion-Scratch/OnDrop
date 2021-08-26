@@ -37,7 +37,7 @@ function notifs() {
     if (result === "granted") {
       notice("Thanks!");
     } else {
-      notice("Ok, that's fine.");
+      //notice("Ok, that's fine.");
     }
   });
 }
