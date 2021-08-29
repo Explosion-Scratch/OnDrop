@@ -8,6 +8,7 @@ const http = require("http");
 var sanitize = require("sanitize-filename");
 const server = http.createServer(app);
 const { Server } = require("socket.io");
+const errors = [];
 
 // set up rate limiter: maximum of 100 requests per minute
 var RateLimit = require("express-rate-limit");
@@ -58,6 +59,16 @@ if (fs.existsSync(`${__dirname}/uploads`)) {
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/public/index.html");
 });
+app.get("/errors/:ip", (req, res) => {
+  var formatted = {};
+  var errs = errors.filter((i) => i.ip == req.params.ip);
+  for (let { type, message, time } of errs) {
+    formatted[type] = formatted[type] || [];
+    formatted[type].push({ time, arguments: message });
+  }
+  res.json(formatted);
+});
+
 app.use(express.static(path.join(__dirname, "public")));
 
 io.on("connection", (socket) => {
@@ -76,6 +87,9 @@ io.on("connection", (socket) => {
       } catch (e) {}
     }
   });
+  socket.on("error", (err) => {
+    errors.push({ ...err, time: new Date().toString() });
+  });
   socket.on("public key", ({ key }) => {
     keys[_id] = key;
   });
@@ -83,8 +97,8 @@ io.on("connection", (socket) => {
     if (!keys[id]) callback({ error: true, message: "Key not found" });
     callback({ error: false, key: keys[id] });
   });
-  socket.on("uploading", ({ id }) => {
-    io.to(ip).emit("uploading", { id });
+  socket.on("uploading", ({ id, to }) => {
+    io.to(ip).emit("uploading", { id, toId: to });
   });
 
   socket.on("ip", (info) => {
