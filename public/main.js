@@ -122,7 +122,7 @@ document.onpaste = async function (event) {
     }
     for (let item of document.querySelectorAll("[data-id]")) {
       var to_id = item.getAttribute("data-id");
-      sendFile({ to: to_id, file });
+      sendFile({ id: to_id, file });
     }
   }
 };
@@ -380,7 +380,7 @@ async function sendFile(opts) {
     file: await c.encrypt({ file: opts.file, to: opts.id }),
     name: opts.file.name,
     type: opts.file.type,
-    to: opts.id,
+    to: opts.id || opts.to,
   });
 }
 
