@@ -22,7 +22,6 @@
 - 😎 Looks good!
 - 🌔 Dark mode
 
-
 <small><i>Name by [Jeffalo](https://github.com/jeffalo)</i></small>
 
 ## Stuff that will be added soon:
