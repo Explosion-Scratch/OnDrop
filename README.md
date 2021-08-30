@@ -89,7 +89,7 @@ See [`LICENSE.md`](https://github.com/Explosion-Scratch/ondrop/blob/master/LICEN
 - You can drag and drop not just files, but images and text from webpages as well!
 - Installable as a PWA!
 - Add `?dev=true` to the URL to send errors and logs to the server and view them at `/errors/${ip_hash_here}`
-    - Errors are not recorded for users without dev mode on.
+  - Errors are not recorded for users without dev mode on.
   <hr>
   <div align=right><i>
 
