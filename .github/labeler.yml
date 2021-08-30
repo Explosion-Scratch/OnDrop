@@ -4,7 +4,9 @@ repo:
 
 # Add 'test' label to any change to *.spec.js files within the source dir
 docs:
-- any: ["README.md", "LICENSE", "LICENSE.md"]
+- "README.md"
+- "LICENSE"
+- "LICENSE.md"
 
 # Add 'source' label to any change to src files within the source dir EXCEPT for the docs sub-folder
 "Server side":
@@ -21,8 +23,8 @@ frontend:
 - any: ["public/index.html"]
 
 "Client side": 
-  - "public/main.js"
-  - "public/resources/**"
+- "public/main.js"
+- "public/resources/**"
   all: ['!public/manifest.json']
   
 "PWA": 
