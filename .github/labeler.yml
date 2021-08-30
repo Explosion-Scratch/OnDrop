@@ -21,8 +21,10 @@ frontend:
 - any: ["public/index.html"]
 
 "Client side": 
-- any: ["public/main.js", "public/resources/**"]
+  - "public/main.js"
+  - "public/resources/**"
   all: ['!public/manifest.json']
   
 "PWA": 
-- any: ["public/manifest.json", "public/sw.js"]
+- "public/manifest.json"
+- "public/sw.js"
