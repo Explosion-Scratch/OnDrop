@@ -87,7 +87,9 @@ See [`LICENSE.md`](https://github.com/Explosion-Scratch/ondrop/blob/master/LICEN
 - You can create a unique link to share with someone if they don't live nearby or aren't on the same wifi network by using the `ip` query parameter, (like this: `https://ondrop.explosionscratc.repl.co/?ip=test`, now if the person you send it to goes to that link you'll be able to connect)
 - You can paste anything and it'll upload it to everyone, an image, some text, etc!
 - You can drag and drop not just files, but images and text from webpages as well!
-- Now installable as a PWA!
+- Installable as a PWA!
+- Add `?dev=true` to the URL to send errors and logs to the server and view them at `/errors/${ip_hash_here}`
+    - Errors are not recorded for users without dev mode on.
   <hr>
   <div align=right><i>
 
