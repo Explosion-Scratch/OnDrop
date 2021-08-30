@@ -1,0 +1,31 @@
+# Add 'repo' label to any root file changes
+repo:
+- ./*
+
+# Add 'test' label to any change to *.spec.js files within the source dir
+"Docs":
+- "README.md"
+- "LICENSE"
+- "LICENSE.md"
+
+# Add 'source' label to any change to src files within the source dir EXCEPT for the docs sub-folder
+"Server side":
+- 'index.js'
+
+# Add 'frontend` label to any change to *.js files as long as the `main.js` hasn't changed
+"Images":
+- 'public/images/**'
+
+"Encryption": 
+- "public/crypto_*.js"
+
+Frontend: 
+- "public/index.html"
+
+"Client side": 
+- "public/main.js"
+- "public/resources/**"
+  
+"PWA": 
+- "public/manifest.json"
+- "public/sw.js"

@@ -86,21 +86,23 @@
     return await keyPromise;
   }
 
-  //Hopefully this can be used in place of the actual file data and nothing much else has to be changed.
+  // Hopefully this can be used in place of the actual file data and nothing
+  // much else has to be changed.
   function encrypt({ file, to }) {
     return new Promise((resolve) => {
       var reader = new FileReader();
       reader.onload = async () => {
-        //In case I forget server side code for this is as such:
+        // In case I forget server side code for this is as such:
         /*
-				socket.on("get public key", ({id}, callback) => {
-					if (!keys[id]) callback({error: true, message: "Key not found"});
-					callback({error: false, key: keys[id]});
-				})
-				*/
+                                socket.on("get public key", ({id}, callback)
+           => { if (!keys[id]) callback({error: true, message: "Key not
+           found"}); callback({error: false, key: keys[id]});
+                                })
+                                */
         const publicKey = await new Promise(async (res) => {
           emit("get public key", { id: to }, ({ error, key, message }) => {
             if (error) {
+              console.log("Tried to get public key for %o id", to);
               console.error(message);
               return;
             } else {
@@ -116,6 +118,6 @@
 
   async function decrypt(fileString) {
     const { privateKey } = await keyPromise;
-    return crypt.decrypt(privateKey, fileString).message; //Should return the data URL if everything works right.
+    return crypt.decrypt(privateKey, fileString).message; // Should return the data URL if everything works right.
   }
 })();

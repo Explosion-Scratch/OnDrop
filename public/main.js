@@ -1,3 +1,5 @@
+setup_dev_mode();
+
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker
     .register("sw.js")
@@ -13,14 +15,10 @@ if ("serviceWorker" in navigator) {
       var { file } = event.data;
       console.log("File ", file);
       for (let item of document.querySelectorAll("[data-id]")) {
-        var id = item.getAttribute("data-id");
-        item.setAttribute("uploading", "");
-        socket.emit("uploading", { id });
-        socket.emit("file", {
-          file: await c.encrypt({ file, to: id }),
-          name: file.name,
-          type: file.type,
-          to: id,
+        var to_id = item.getAttribute("data-id");
+        sendFile({
+          file,
+          id: to_id,
         });
       }
     });
@@ -37,7 +35,7 @@ function notifs() {
     if (result === "granted") {
       notice("Thanks!");
     } else {
-      //notice("Ok, that's fine.");
+      // notice("Ok, that's fine.");
     }
   });
 }
@@ -69,7 +67,6 @@ var app = Vue.createApp({
         "Devices nearby or on the same network as you will show up here.",
         "Click on a device to open the file chooser",
         "Set ?ip=anything in the url to connect with someone far away",
-        "The file size limit is 200mb.",
       ],
       messageIndex: 0,
     };
@@ -80,13 +77,7 @@ var app = Vue.createApp({
       app.justClicked = t.getAttribute("data-id");
       file = await getFile();
       console.log("File input changed: ", file);
-      socket.emit("uploading", { id });
-      socket.emit("file", {
-        file: await c.encrypt({ file, to: app.justClicked }),
-        name: file.name,
-        type: file.type,
-        to: app.justClicked,
-      });
+      sendFile({ file, id: app.justClicked });
     },
   },
   computed: {
@@ -130,22 +121,16 @@ document.onpaste = async function (event) {
       return;
     }
     for (let item of document.querySelectorAll("[data-id]")) {
-      var id = item.getAttribute("data-id");
-      item.setAttribute("uploading", "");
-      socket.emit("uploading", { id });
-      socket.emit("file", {
-        file: await c.encrypt({ file, to: id }),
-        name: file.name,
-        type: file.type,
-        to: id,
-      });
+      var to_id = item.getAttribute("data-id");
+      sendFile({ id: to_id, file });
     }
   }
 };
 
 function addDrag(dropZone) {
   dropZone.setAttribute("drag-initiated", "");
-  // Optional.   Show the copy icon when dragging over.  Seems to only work for chrome.
+  // Optional.   Show the copy icon when dragging over.  Seems to only work for
+  // chrome.
   dropZone.addEventListener("dragover", function (e) {
     e.stopPropagation();
     e.preventDefault();
@@ -173,13 +158,7 @@ function addDrag(dropZone) {
       file.name = "file";
     }
 
-    socket.emit("uploading", { id });
-    socket.emit("file", {
-      file: await c.encrypt({ file, to: dropZone.getAttribute("data-id") }),
-      name: file.name,
-      type: file.type,
-      to: dropZone.getAttribute("data-id"),
-    });
+    sendFile({ file, id: dropZone.getAttribute("data-id") });
   });
 
   dropZone.addEventListener("dragleave", () => {
@@ -195,13 +174,20 @@ fetch("https://icanhazip.com/")
   .then((res) => res.text())
   .then(async (data) => {
     ip = param("ip") || data;
+    if (param("dev")) {
+      console.log(
+        `%cHello dev!%c\nGo to https://ondrop.dev/errors/${ip} to see logging from this IP address.`,
+        "color: orange; font-weight: 500; font-size: 1.3rem;",
+        "color: gray; font-style: italic;"
+      );
+    }
     if (!localStorage.getItem("name")) {
       localStorage.setItem(
         "name",
         await prompt({ title: "Name", text: "Enter your name below." })
       );
     }
-    //Wait for key to be generated.
+    // Wait for key to be generated.
     await cryptoLoadPromise;
     await c.key();
     var stuff = {
@@ -243,7 +229,6 @@ socket.on("joined room", async (_) => {
   console.log("File ", file);
   for (let item of document.querySelectorAll("[data-id]")) {
     var id = item.getAttribute("data-id");
-    item.setAttribute("uploading", "");
     socket.emit("uploading", { id });
     socket.emit("file", {
       file: await c.encrypt({ file, to: id }),
@@ -287,7 +272,15 @@ socket.on("id", (_) => {
   console.log("This client's id is: ", _);
   id = _;
 });
-socket.on("uploading", ({ id: _id }) => {
+socket.on("uploading", ({ id: _id, toId }) => {
+  if (_id === id) {
+    [...document.querySelectorAll("[data-id]")]
+      .find((i) => i.getAttribute("data-id") === toId)
+      .setAttribute("uploading", "");
+    return console.log(
+      "Uploader is self, setting uploading attribute on other el."
+    );
+  }
   console.log("Somebody is uploading: ", _id);
   [...document.querySelectorAll("[data-id]")]
     .find((i) => i.getAttribute("data-id") === _id)
@@ -302,7 +295,8 @@ socket.on("done uploading", ({ id: _id }) => {
 socket.on("got file", async (info) => {
   console.log("info.fromId is: ", info.fromId, info.fromId === id);
   if (info.fromId === id) {
-    // This is to get file events from self, this means we can sense when the upload is done. We want to stop flashing the square.
+    // This is to get file events from self, this means we can sense when the
+    // upload is done. We want to stop flashing the square.
     uploadNotice();
     [...document.querySelectorAll("[data-id]")]
       .find((i) => i.getAttribute("data-id") === info.to)
@@ -381,4 +375,40 @@ async function getFile() {
     };
     e.click();
   });
+}
+async function sendFile(opts) {
+  socket.emit("uploading", { id, to: opts.id });
+  socket.emit("file", {
+    file: await c.encrypt({ file: opts.file, to: opts.id }),
+    name: opts.file.name,
+    type: opts.file.type,
+    to: opts.id || opts.to,
+  });
+}
+
+function setup_dev_mode() {
+  if (param("dev")) {
+    window.onerror = function (message, source, line, col, error) {
+      socket.emit("error", {
+        ip: ip,
+        type: "window_onerror__message",
+        message,
+      });
+    };
+    var oldconsole = {};
+    window["LOGGING_MESSAGES"] = {};
+    for (let item of ["log", "error", "info"]) {
+      oldconsole[item] = console[item];
+      window["LOGGING_MESSAGES"][item] = [];
+      console[item] = (...args) => {
+        socket.emit("error", {
+          ip,
+          type: item,
+          message: args,
+        });
+        window["LOGGING_MESSAGES"][item].push(args);
+        oldconsole[item](...args);
+      };
+    }
+  }
 }
