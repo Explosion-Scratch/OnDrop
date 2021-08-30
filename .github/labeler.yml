@@ -3,7 +3,7 @@ repo:
 - ./*
 
 # Add 'test' label to any change to *.spec.js files within the source dir
-docs:
+"Docs":
 - "README.md"
 - "LICENSE"
 - "LICENSE.md"
@@ -13,13 +13,13 @@ docs:
 - 'index.js'
 
 # Add 'frontend` label to any change to *.js files as long as the `main.js` hasn't changed
-images:
+"Images":
 - 'public/images/**'
 
-crypto: 
+"Encryption": 
 - "public/crypto_*.js"
 
-frontend: 
+Frontend: 
 - "public/index.html"
 
 "Client side": 
