@@ -1,6 +1,6 @@
 # Add 'repo' label to any root file changes
 repo:
-- '*'
+- ./*
 
 # Add 'test' label to any change to *.spec.js files within the source dir
 docs:
@@ -10,22 +10,21 @@ docs:
 
 # Add 'source' label to any change to src files within the source dir EXCEPT for the docs sub-folder
 "Server side":
-- any: ['index.js']
+- 'index.js'
 
 # Add 'frontend` label to any change to *.js files as long as the `main.js` hasn't changed
 images:
-- any: ['public/images/**']
+- 'public/images/**'
 
 crypto: 
-- any: ["public/crypto_*.js"]
+- "public/crypto_*.js"
 
 frontend: 
-- any: ["public/index.html"]
+- "public/index.html"
 
 "Client side": 
 - "public/main.js"
 - "public/resources/**"
-- all: ['!public/manifest.json']
   
 "PWA": 
 - "public/manifest.json"
