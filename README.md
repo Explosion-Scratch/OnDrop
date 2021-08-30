@@ -74,7 +74,7 @@ Thanks! That's a style called [neomorphism](https://uxdesign.cc/neumorphism-in-u
 
 ## How did you come up with this idea?
 
-![Roll Safe, the Guy-Tapping-Head Meme](https://pyxis.nymag.com/v1/imgs/d6a/dc7/4a5001b7beea096457f480c8808572428b-09-roll-safe.2x.rsocial.w600.jpg)
+<div align=center><img src=https://pyxis.nymag.com/v1/imgs/d6a/dc7/4a5001b7beea096457f480c8808572428b-09-roll-safe.2x.rsocial.w600.jpg width=500></div>
 Came to me when I realized that multiple people can have the same IP address, therefore it'd be possible to group them and figure out who's near whom.
 
 ## Can I use your code?
