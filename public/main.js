@@ -35,7 +35,7 @@ function notifs() {
     if (result === "granted") {
       notice("Thanks!");
     } else {
-      //notice("Ok, that's fine.");
+      // notice("Ok, that's fine.");
     }
   });
 }
@@ -129,7 +129,8 @@ document.onpaste = async function (event) {
 
 function addDrag(dropZone) {
   dropZone.setAttribute("drag-initiated", "");
-  // Optional.   Show the copy icon when dragging over.  Seems to only work for chrome.
+  // Optional.   Show the copy icon when dragging over.  Seems to only work for
+  // chrome.
   dropZone.addEventListener("dragover", function (e) {
     e.stopPropagation();
     e.preventDefault();
@@ -186,7 +187,7 @@ fetch("https://icanhazip.com/")
         await prompt({ title: "Name", text: "Enter your name below." })
       );
     }
-    //Wait for key to be generated.
+    // Wait for key to be generated.
     await cryptoLoadPromise;
     await c.key();
     var stuff = {
@@ -294,7 +295,8 @@ socket.on("done uploading", ({ id: _id }) => {
 socket.on("got file", async (info) => {
   console.log("info.fromId is: ", info.fromId, info.fromId === id);
   if (info.fromId === id) {
-    // This is to get file events from self, this means we can sense when the upload is done. We want to stop flashing the square.
+    // This is to get file events from self, this means we can sense when the
+    // upload is done. We want to stop flashing the square.
     uploadNotice();
     [...document.querySelectorAll("[data-id]")]
       .find((i) => i.getAttribute("data-id") === info.to)
