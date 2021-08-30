@@ -20,10 +20,8 @@ crypto:
 frontend: 
 - any: ["public/index.html"]
 
-
-
 "Client side": 
-- any: ["public/main.js", "public/resources/**]
+- any: ["public/main.js", "public/resources/**"]
   all: ['!public/manifest.json']
   
 "PWA": 
