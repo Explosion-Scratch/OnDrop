@@ -25,7 +25,7 @@ frontend:
 "Client side": 
 - "public/main.js"
 - "public/resources/**"
-  all: ['!public/manifest.json']
+- all: ['!public/manifest.json']
   
 "PWA": 
 - "public/manifest.json"
