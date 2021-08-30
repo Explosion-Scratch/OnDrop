@@ -1,7 +1,4 @@
-<pre align=center><h2><b>Huge shoutout to <a href=https://github.com/ekmand>Ekmand</a> for sponsering this project by buying a domain for it!</b></h2></pre>
-
-<br><hr>
-
+<hr>
 <h1 align=center>⚡ OnDrop ⚡</h1>
 <hr>
 <div align=center><img src=https://user-images.githubusercontent.com/61319150/128249920-2ce97495-1f5d-41df-b439-82e96c3c2db1.gif></div><br>
