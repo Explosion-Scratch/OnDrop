@@ -101,6 +101,7 @@
         const publicKey = await new Promise(async (res) => {
           emit("get public key", { id: to }, ({ error, key, message }) => {
             if (error) {
+							console.log("Tried to get public key for %o id", to)
               console.error(message);
               return;
             } else {
