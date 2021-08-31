@@ -1,0 +1,39 @@
+name: Suggestion
+description: Share a great idea!
+title: "[Suggestion]: "
+labels: [suggestion]
+assignees:
+  - Explosion-Scratch
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this suggestion!
+  - type: input
+    id: contact
+    attributes:
+      label: Contact Details
+      description: How can we get in touch with you if we need more info?
+      placeholder: ex. email@example.com
+    validations:
+      required: false
+  - type: markdown
+    id: idea
+    attributes:
+      label: "What's your idea?"
+      description: "Explain your idea to us in as much detail as you can! This will help it become a reality!"
+      placeholder: "This box looks better filled"
+    validations:
+      required: true
+  - type: dropdown
+    id: types
+    attributes:
+      label: What does this suggestion relate to?
+      multiple: true
+      options:
+        - PWA support
+        - Encryption/decryption
+        - Appearance of the frontend
+        - Backend functionality
+        - Security
+        - Performance
