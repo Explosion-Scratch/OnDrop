@@ -1,7 +1,7 @@
 name: Bug Report
 description: File a bug report
 title: "[Bug]: "
-labels: [bug, triage]
+labels: [bug]
 assignees:
   - Explosion-Scratch
 body:
@@ -45,17 +45,17 @@ body:
         - Safari
         - Microsoft Edge
   - type: dropdown
-      id: types
-      attributes:
-        label: What does this suggestion relate to? (Select multiple if needed)
-        multiple: true
-        options:
-          - PWA support
-          - Encryption/decryption
-          - Appearance of the frontend
-          - Backend functionality
-          - Security
-          - Performance
+    id: types
+    attributes:
+      label: What does this suggestion relate to? (Select multiple if needed)
+      multiple: true
+      options:
+        - PWA support
+        - Encryption/decryption
+        - Appearance of the frontend
+        - Backend functionality
+        - Security
+        - Performance
   - type: textarea
     id: logs
     attributes:
