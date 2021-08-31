@@ -37,13 +37,25 @@ body:
   - type: dropdown
     id: browsers
     attributes:
-      label: What browsers are you seeing the problem on?
+      label: What browsers are you seeing the problem on? (Select multiple if needed)
       multiple: true
       options:
         - Firefox
         - Chrome
         - Safari
         - Microsoft Edge
+  - type: dropdown
+      id: types
+      attributes:
+        label: What does this suggestion relate to? (Select multiple if needed)
+        multiple: true
+        options:
+          - PWA support
+          - Encryption/decryption
+          - Appearance of the frontend
+          - Backend functionality
+          - Security
+          - Performance
   - type: textarea
     id: logs
     attributes:
