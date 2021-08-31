@@ -17,10 +17,12 @@ body:
       placeholder: ex. email@example.com
     validations:
       required: false
-  - type: markdown
+  - type: textarea
     id: idea
     attributes:
-      value: "Explain your idea to us in as much detail as you can! This will help it become a reality!"
+      label: "What's your idea?"
+      description: "Explain your idea to us in as much detail as you can! This will help it become a reality!"
+      placeholder: "This box looks better filled"
     validations:
       required: true
   - type: dropdown
