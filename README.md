@@ -89,7 +89,7 @@ which is a super cool way to make stuff look realistic and pleasant using CSS.
 
 ## How did you come up with this idea?
 
-<div align=center><img src=https://pyxis.nymag.com/v1/imgs/d6a/dc7/4a5001b7beea096457f480c8808572428b-09-roll-safe.2x.rsocial.w600.jpg width=500></div>
+<div align=center><img src=https://pyxis.nymag.com/v1/imgs/d6a/dc7/4a5001b7beea096457f480c8808572428b-09-roll-safe.2x.rsocial.w600.jpg width=500></div>)
 Came to me when I realized that multiple people can have the same IP address, therefore it'd be possible to group them and figure out who's near whom.
 
 ## Can I use your code?
@@ -122,8 +122,9 @@ See
 </i></div>
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMjI0Mjg0MTMzLDc2MjU5NzQ1MywtNTYwOT
-A2ODU5LDk0ODIyMTQ5NSwtMTE1NDAwNjA3MywtMjkxMjA5Mzks
-LTExNzE2MTM0MTcsLTEwMjA4NTY1OTUsLTE4MTY3MDcyOTQsLT
-IxMTM1ODgyMjcsMTI5MzIyNDcwMywtNTU0OTExODgyXX0=
+eyJoaXN0b3J5IjpbNDk0OTk1NTM4LDIyNDI4NDEzMyw3NjI1OT
+c0NTMsLTU2MDkwNjg1OSw5NDgyMjE0OTUsLTExNTQwMDYwNzMs
+LTI5MTIwOTM5LC0xMTcxNjEzNDE3LC0xMDIwODU2NTk1LC0xOD
+E2NzA3Mjk0LC0yMTEzNTg4MjI3LDEyOTMyMjQ3MDMsLTU1NDkx
+MTg4Ml19
 -->
