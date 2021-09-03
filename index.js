@@ -59,6 +59,10 @@ if (fs.existsSync(`${__dirname}/uploads`)) {
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/public/index.html");
 });
+app.post("/", (req, res) => {
+	res.cookie("error", JSON.stringify({title: "Sorry, an error occurred", text: "Part of the app wasn't setup yet, try sharing again!"}))
+})
+
 app.get("/errors/:ip", (req, res) => {
   var formatted = {};
   var errs = errors.filter((i) => i.ip == req.params.ip);
