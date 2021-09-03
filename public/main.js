@@ -387,13 +387,13 @@ async function sendFile(opts) {
 }
 
 async function setup() {
-	const {getCookie, setCookie, removeCookie} = await import("./cookies.js");
-	if (getCookie("error")){
-		console.log("Got error cookie from server: %o", getCookie("error"));
-		alert(JSON.parse(unescape(getCookie("error"))));
-		document.querySelector("#popup-close").style.width = "100%";
-		removeCookie("error");
-	}
+  const { getCookie, setCookie, removeCookie } = await import("./cookies.js");
+  if (getCookie("error")) {
+    console.log("Got error cookie from server: %o", getCookie("error"));
+    alert(JSON.parse(unescape(getCookie("error"))));
+    document.querySelector("#popup-close").style.width = "100%";
+    removeCookie("error");
+  }
   if (param("dev")) {
     window.onerror = function (message, source, line, col, error) {
       socket.emit("error", {
