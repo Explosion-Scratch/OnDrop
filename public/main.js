@@ -1,3 +1,7 @@
+/*
+@todo Organize code in main.js
+@body The code of main.js is pretty messy and could use some organization.
+*/
 setup();
 
 if ("serviceWorker" in navigator) {

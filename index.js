@@ -28,6 +28,7 @@ const io = new Server(server, {
   pingTimeout: 30000,
   maxHttpBufferSize: 1e6 * FILE_SIZE_LIMIT,
 });
+
 const mime = require("mime-types");
 const hash = function (str, seed = 0) {
   let h1 = 0xdeadbeef ^ seed,
@@ -152,7 +153,7 @@ io.on("connection", (socket) => {
       () => fs.unlink(`${__dirname}/uploads/${filename}`, () => {}),
       FIVE_MINUTES
     );
-    // Implement destination, security isn't really a concern here because they're on the same network.
+    
     io.to(ip).emit("got file", {
       to: blob.to,
       url: `/dl/${filename}`,
@@ -162,6 +163,8 @@ io.on("connection", (socket) => {
     });
   });
 });
+
+//Used for getting the file, doesn't send the file, but rather JSON of the encrypted version
 app.get("/dl/:id", (req, res) => {
   var error = false;
   try {
@@ -176,16 +179,6 @@ app.get("/dl/:id", (req, res) => {
     res.json({ error: true, message: "No such file exists" });
     error = true;
   }
-  // Removing the file doesn't let people download twice
-  /*
-	if (!error){
-		setTimeout(() => {
-			try {
-				fs.unlink(`${__dirname}/uploads/${req.params.id}`, () => {});
-			} catch(e){}
-		}, 1000)
-	}
-	*/
 });
 
 server.listen(3000, () => {

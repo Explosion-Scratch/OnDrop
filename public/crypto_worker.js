@@ -1,6 +1,10 @@
 (async () => {
   window = self;
 
+	/*
+	@todo Find a better way to import Crypto.js
+	@body Maybe a file or something, this way is likely prone to breaking.
+	*/
   eval(
     await fetch(
       "https://cdn.jsdelivr.net/gh/juhoen/hybrid-crypto-js@0.2.4/web/hybrid-crypto.min.js"
@@ -26,7 +30,7 @@
         break;
     }
 
-    // Return result to the UI thread
+    // Return result to the main thread
     postMessage([messageId, result]);
   };
   function localStorage(method, name, data) {
@@ -86,19 +90,10 @@
     return await keyPromise;
   }
 
-  // Hopefully this can be used in place of the actual file data and nothing
-  // much else has to be changed.
   function encrypt({ file, to }) {
     return new Promise((resolve) => {
       var reader = new FileReader();
       reader.onload = async () => {
-        // In case I forget server side code for this is as such:
-        /*
-                                socket.on("get public key", ({id}, callback)
-           => { if (!keys[id]) callback({error: true, message: "Key not
-           found"}); callback({error: false, key: keys[id]});
-                                })
-                                */
         const publicKey = await new Promise(async (res) => {
           emit("get public key", { id: to }, ({ error, key, message }) => {
             if (error) {

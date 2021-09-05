@@ -1,11 +1,3 @@
-// Assuming https://raw.githubusercontent.com/juhoen/hybrid-crypto-js/master/web/hybrid-crypto.min.js is imported
-/*
-TODOS:
-------
-• Add public key list to server side
-• Encrypt and decrypt in web worker instead of main thread (it doesn't seem to be that memory intensive though)
-• Figure out what algorithms are best.
-*/
 window.cryptWorker = new Worker("crypto_worker.js");
 
 var publicKeyPromiseRes;
@@ -39,6 +31,7 @@ window.cryptWorker.addEventListener("message", ({ data }) => {
     });
   }
 });
+
 function keyHandler(e) {
   const { type, key } = e.data;
   if (type === "key generated") {
