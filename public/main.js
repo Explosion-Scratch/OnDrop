@@ -204,14 +204,8 @@ fetch("https://icanhazip.com/")
       stuff.addr = ip;
     }
     socket.emit("ip", stuff);
-    ready();
   });
 
-function ready() {
-  // var blob = new Blob(["test"], {type: "text/plain"});
-  // TODO: Add person for destination
-  // socket.emit("file", {file: blob, type: blob.type})
-}
 var joinedTime = -1;
 socket.on("joined room", async (_) => {
   joinedTime = Date.now();
@@ -271,7 +265,6 @@ socket.on("client left", (_) => {
   console.log("Client left: ", _);
   app.clients = app.clients.filter((i) => i.id !== _.id);
 });
-socket.on("test message", (_) => console.log("Got test message: ", _));
 socket.on("id", (_) => {
   console.log("This client's id is: ", _);
   id = _;
