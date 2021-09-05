@@ -1,7 +1,7 @@
 (async () => {
   window = self;
 
-	/*
+  /*
 	@todo Find a better way to import Crypto.js
 	@body Maybe a file or something, this way is likely prone to breaking.
 	*/
