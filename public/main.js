@@ -4,65 +4,6 @@
 */
 setup();
 
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker
-    .register("sw.js")
-    .then((reg) => console.log("Service worker registered"))
-    .catch((err) => console.log("Service worker not registered", err));
-
-  navigator.serviceWorker.ready.then((r) => {
-    console.log("Service worker ready", r);
-    navigator.serviceWorker.addEventListener("message", async (event) => {
-      // Set this then detection is done once we join a room.
-      window["SERVICE_WORKER_FILE"] = event.data.file;
-      console.log("Got service worker file", event.data);
-      var { file } = event.data;
-      console.log("File ", file);
-      for (let item of document.querySelectorAll("[data-id]")) {
-        var to_id = item.getAttribute("data-id");
-        sendFile({
-          file,
-          id: to_id,
-        });
-      }
-    });
-  });
-}
-
-function notifs() {
-  if (Notification.permission !== "default") return;
-  notice(
-    "Grant access to notifications to get notifications when a file is sent or finishes uploading!"
-  );
-
-  Notification.requestPermission().then((result) => {
-    if (result === "granted") {
-      notice("Thanks!");
-    } else {
-      // notice("Ok, that's fine.");
-    }
-  });
-}
-
-setTimeout(notifs, 10000);
-
-const hash = function (str, seed = 0) {
-  let h1 = 0xdeadbeef ^ seed,
-    h2 = 0x41c6ce57 ^ seed;
-  for (let i = 0, ch; i < str.length; i++) {
-    ch = str.charCodeAt(i);
-    h1 = Math.imul(h1 ^ ch, 2654435761);
-    h2 = Math.imul(h2 ^ ch, 1597334677);
-  }
-  h1 =
-    Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^
-    Math.imul(h2 ^ (h2 >>> 13), 3266489909);
-  h2 =
-    Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^
-    Math.imul(h1 ^ (h1 >>> 13), 3266489909);
-  return (4294967296 * (2097151 & h2) + (h1 >>> 0)).toString(36);
-};
-
 var app = Vue.createApp({
   data() {
     return {
@@ -109,66 +50,6 @@ setInterval(() => {
     app.messageIndex = 0;
   }
 }, 5000);
-
-document.onpaste = async function (event) {
-  var items = (event.clipboardData || event.originalEvent.clipboardData).items;
-  console.log(JSON.stringify(items)); // might give you mime types
-  for (var index in items) {
-    var item = items[index];
-    var file = item;
-    if (item.kind === "file") {
-      file = item.getAsFile();
-    } else if (item.kind === "string") {
-      file = await new Promise((res) => file.getAsString(res));
-      file = new File([file], "message.txt", { type: "text/plain" });
-    } else {
-      return;
-    }
-    for (let item of document.querySelectorAll("[data-id]")) {
-      var to_id = item.getAttribute("data-id");
-      sendFile({ id: to_id, file });
-    }
-  }
-};
-
-function addDrag(dropZone) {
-  dropZone.setAttribute("drag-initiated", "");
-  // Optional.   Show the copy icon when dragging over.  Seems to only work for
-  // chrome.
-  dropZone.addEventListener("dragover", function (e) {
-    e.stopPropagation();
-    e.preventDefault();
-    dropZone.setAttribute("dragging", "");
-    e.dataTransfer.dropEffect = "copy";
-  });
-
-  // Get file data on drop
-  dropZone.addEventListener("drop", async function (e) {
-    dropZone.setAttribute("uploading", "");
-    dropZone.removeAttribute("dragging");
-    e.stopPropagation();
-    e.preventDefault();
-    var file = e.dataTransfer.files[0];
-    if (!file) {
-      file = e.dataTransfer.items[0];
-      console.log(file);
-      file =
-        file.getAsFile() || (await new Promise((res) => file.getAsString(res)));
-      if (typeof file === "string") {
-        file = new File([file], "message.txt", { type: "text/plain" });
-      }
-      console.log(file);
-      if (!file) return;
-      file.name = "file";
-    }
-
-    sendFile({ file, id: dropZone.getAttribute("data-id") });
-  });
-
-  dropZone.addEventListener("dragleave", () => {
-    dropZone.removeAttribute("dragging");
-  });
-}
 
 var socket = io();
 var ip;
@@ -384,6 +265,36 @@ async function sendFile(opts) {
 }
 
 async function setup() {
+  //Notifications
+  setTimeout(notifs, 10000);
+
+  //Service worker
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker
+      .register("sw.js")
+      .then((reg) => console.log("Service worker registered"))
+      .catch((err) => console.log("Service worker not registered", err));
+
+    navigator.serviceWorker.ready.then((r) => {
+      console.log("Service worker ready", r);
+      navigator.serviceWorker.addEventListener("message", async (event) => {
+        // Set this then detection is done once we join a room.
+        window["SERVICE_WORKER_FILE"] = event.data.file;
+        console.log("Got service worker file", event.data);
+        var { file } = event.data;
+        console.log("File ", file);
+        for (let item of document.querySelectorAll("[data-id]")) {
+          var to_id = item.getAttribute("data-id");
+          sendFile({
+            file,
+            id: to_id,
+          });
+        }
+      });
+    });
+  }
+
+  //Cookies and error messages
   const { getCookie, setCookie, removeCookie } = await import("./cookies.js");
   if (getCookie("error")) {
     console.log("Got error cookie from server: %o", getCookie("error"));
@@ -391,6 +302,8 @@ async function setup() {
     document.querySelector("#popup-close").style.width = "100%";
     removeCookie("error");
   }
+
+  //Dev mode
   if (param("dev")) {
     window.onerror = function (message, source, line, col, error) {
       socket.emit("error", {
@@ -415,4 +328,95 @@ async function setup() {
       };
     }
   }
+
+  //Set up pasting
+  document.onpaste = async function (event) {
+    var items = (event.clipboardData || event.originalEvent.clipboardData)
+      .items;
+    console.log(JSON.stringify(items)); // might give you mime types
+    for (var index in items) {
+      var item = items[index];
+      var file = item;
+      if (item.kind === "file") {
+        file = item.getAsFile();
+      } else if (item.kind === "string") {
+        file = await new Promise((res) => file.getAsString(res));
+        file = new File([file], "message.txt", { type: "text/plain" });
+      } else {
+        return;
+      }
+      for (let item of document.querySelectorAll("[data-id]")) {
+        var to_id = item.getAttribute("data-id");
+        sendFile({ id: to_id, file });
+      }
+    }
+  };
+}
+function notifs() {
+  if (Notification.permission !== "default") return;
+  notice(
+    "Grant access to notifications to get notifications when a file is sent or finishes uploading!"
+  );
+
+  Notification.requestPermission().then((result) => {
+    if (result === "granted") {
+      notice("Thanks!");
+    } else {
+      // notice("Ok, that's fine.");
+    }
+  });
+}
+function hash(str, seed = 0) {
+  let h1 = 0xdeadbeef ^ seed,
+    h2 = 0x41c6ce57 ^ seed;
+  for (let i = 0, ch; i < str.length; i++) {
+    ch = str.charCodeAt(i);
+    h1 = Math.imul(h1 ^ ch, 2654435761);
+    h2 = Math.imul(h2 ^ ch, 1597334677);
+  }
+  h1 =
+    Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^
+    Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+  h2 =
+    Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^
+    Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+  return (4294967296 * (2097151 & h2) + (h1 >>> 0)).toString(36);
+}
+function addDrag(dropZone) {
+  dropZone.setAttribute("drag-initiated", "");
+  // Optional.   Show the copy icon when dragging over.  Seems to only work for
+  // chrome.
+  dropZone.addEventListener("dragover", function (e) {
+    e.stopPropagation();
+    e.preventDefault();
+    dropZone.setAttribute("dragging", "");
+    e.dataTransfer.dropEffect = "copy";
+  });
+
+  // Get file data on drop
+  dropZone.addEventListener("drop", async function (e) {
+    dropZone.setAttribute("uploading", "");
+    dropZone.removeAttribute("dragging");
+    e.stopPropagation();
+    e.preventDefault();
+    var file = e.dataTransfer.files[0];
+    if (!file) {
+      file = e.dataTransfer.items[0];
+      console.log(file);
+      file =
+        file.getAsFile() || (await new Promise((res) => file.getAsString(res)));
+      if (typeof file === "string") {
+        file = new File([file], "message.txt", { type: "text/plain" });
+      }
+      console.log(file);
+      if (!file) return;
+      file.name = "file";
+    }
+
+    sendFile({ file, id: dropZone.getAttribute("data-id") });
+  });
+
+  dropZone.addEventListener("dragleave", () => {
+    dropZone.removeAttribute("dragging");
+  });
 }
