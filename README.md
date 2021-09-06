@@ -1,5 +1,5 @@
 <hr>
-<h1 align=center>⚡ OnDrop ⚡</h1>
+<h1 align=center>⚡ <a href="https://ondrop.dev">OnDrop</a> ⚡</h1>
 <div align=center><img src=https://user-images.githubusercontent.com/61319150/128249920-2ce97495-1f5d-41df-b439-82e96c3c2db1.gif></div><br>
 <div align=center><i>A lightning fast, secure and encrypted way to share files!</i></div>
 <hr>
