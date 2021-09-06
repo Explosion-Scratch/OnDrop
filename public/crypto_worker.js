@@ -5,11 +5,7 @@
 	@todo Find a better way to import Crypto.js
 	@body Maybe a file or something, this way is likely prone to breaking.
 	*/
-  eval(
-    await fetch(
-      "crypto_lib.js"
-    ).then((res) => res.text())
-  );
+  eval(await fetch("crypto_lib.js").then((res) => res.text()));
 
   onmessage = async function (e) {
     if (e.data.type) return;
