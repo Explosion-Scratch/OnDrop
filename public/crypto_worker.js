@@ -7,7 +7,7 @@
 	*/
   eval(
     await fetch(
-      "https://cdn.jsdelivr.net/gh/juhoen/hybrid-crypto-js@0.2.4/web/hybrid-crypto.min.js"
+      "crypto_lib.js"
     ).then((res) => res.text())
   );
 
