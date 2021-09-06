@@ -1,10 +1,10 @@
 mode: chatops
-branchName: '${issue.number}-${issue.title}'
+branchName: "${issue.number}-${issue.title}"
 autoCloseIssue: true
 openDraftPR: true
 copyIssueDescriptionToPR: true
 copyIssueAssigneeToPR: true
 copyIssueLabelsToPR: true
-commentMessage: 'Branch ${branchName} created for issue: ${issue.title}'
+commentMessage: "Branch ${branchName} created for issue: ${issue.title}"
 experimental:
   branchNameArgument: true
