@@ -89,7 +89,6 @@ which is a super cool way to make stuff look realistic and pleasant using CSS.
 
 ## How did you come up with this idea?
 
-<div align=center><img src=https://pyxis.nymag.com/v1/imgs/d6a/dc7/4a5001b7beea096457f480c8808572428b-09-roll-safe.2x.rsocial.w600.jpg width=500></div>)
 Came to me when I realized that multiple people can have the same IP address, therefore it'd be possible to group them and figure out who's near whom.
 
 ## Can I use your code?
@@ -97,7 +96,7 @@ Came to me when I realized that multiple people can have the same IP address, th
 See
 [`LICENSE.md`](https://github.com/Explosion-Scratch/ondrop/blob/master/LICENSE.md)
 
-## Tips and tricks! Gimme some!
+## Tips and tricks!
 
 - You can click on a user to share a file with them.
 - You can create a unique link to share with someone if they don't live nearby
