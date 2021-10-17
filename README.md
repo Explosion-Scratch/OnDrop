@@ -27,9 +27,7 @@
 - [ ] Minified and self-hosted libraries (no more `<script>` and `<link>` tags)
 - [x] Support for pasting images (`Control + V`)
 - [ ] Browser extension?
-- [ ] UI support for custom keys instead of IP adresses. (Allows you to connect
-      with someone with a different IP adress than you. Currently it's
-      `?ip=[anything_here]` in the URL.
+- [ ] UI support for custom keys instead of IP addresses. (Allows you to connect with someone with a different IP address than you. Currently it's `?ip=[anything_here]` in the URL.)
 
 # What people are saying about ondrop:
 
