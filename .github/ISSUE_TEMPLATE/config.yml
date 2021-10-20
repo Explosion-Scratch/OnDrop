@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 GitHub Discussions
+    url: https://github.com/Explosion-Scratch/ondrop/discussions
+    about: Ask a question, or just discuss about OnDrop on our GitHub Discussions (our own forums)
+  - name: 🏠 Community Discord
+    url: https://discord.gg/Uq69ZMu77k
+    about: Discuss about OnDrop on our community Discord server (recommended)
