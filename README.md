@@ -83,7 +83,7 @@ which is a super cool way to make stuff look realistic and pleasant using CSS.
 
 ## All these other people you show are contacting you on discord and I feel left out
 
-`--Explosion--#0001` :smile:
+`--Explosion--#6807` :smile:
 
 ## How did you come up with this idea?
 
