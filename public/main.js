@@ -233,11 +233,13 @@ socket.on("got file", async (info) => {
   }
 });
 
+/* Getting the value of a parameter from the URL. */
 function param(name) {
   var params = new URLSearchParams(location.search);
   return params.get(name);
 }
 
+/* Load the crypto_client.js script */
 var s = document.createElement("script");
 var cryptoLoadPromiseRes;
 var cryptoLoadPromise = new Promise(
@@ -253,6 +255,11 @@ s.onload = async () => {
 
   cryptoLoadPromiseRes();
 };
+/**
+ * Converts a data URI to a Blob.
+ * @param dataURI - The data URI to convert to a Blob
+ * @returns The URL of the blob.
+ */
 function dataURItoBlob(dataURI) {
   var mime = dataURI.split(",")[0].split(":")[1].split(";")[0];
   var binary = atob(dataURI.split(",")[1]);
@@ -262,6 +269,10 @@ function dataURItoBlob(dataURI) {
   }
   return URL.createObjectURL(new Blob([new Uint8Array(array)], { type: mime }));
 }
+/**
+ * Open the file picker and ask for a file.
+ * @returns {Promise.<File>} The file object.
+ */
 async function getFile() {
   return new Promise((resolve) => {
     var e = document.createElement("input");
@@ -275,6 +286,12 @@ async function getFile() {
     e.click();
   });
 }
+/**
+ * Emit events for file upload
+ * @param opts The options
+ * @param opts.file A JS file object to upload
+ * @param opts.to The ID of the user to send the file to
+ */
 async function sendFile(opts) {
   socket.emit("uploading", { id, to: opts.id });
   socket.emit("file", {
@@ -325,6 +342,10 @@ async function setup() {
   }
 
   //Dev mode
+  /* If the `dev` parameter is present, then the `window.onerror` event is hooked up to the
+  socket.io server. The `window.onerror` event is triggered when an error occurs in the browser. The
+  `window.onerror` event is sent to the server, and the server then sends the error to the client.
+  */
   if (param("dev")) {
     window.onerror = function (message, source, line, col, error) {
       socket.emit("error", {
@@ -373,6 +394,10 @@ async function setup() {
     }
   };
 }
+/**
+ * If the user has not granted permission to send notifications, then request permission.
+ * @returns none
+ */
 function notifs() {
   if (Notification.permission !== "default") return;
   notice(
@@ -383,10 +408,17 @@ function notifs() {
     if (result === "granted") {
       notice("Thanks!");
     } else {
+      // Incognito does not bother asking, and immediately rejects
       // notice("Ok, that's fine.");
     }
   });
 }
+/**
+ * Given a string and a seed, return a hash of the string using the seed.
+ * @param str - the string to hash
+ * @param [seed=0] - 0xdeadbeef
+ * @returns The hash value.
+ */
 function hash(str, seed = 0) {
   let h1 = 0xdeadbeef ^ seed,
     h2 = 0x41c6ce57 ^ seed;
@@ -403,6 +435,11 @@ function hash(str, seed = 0) {
     Math.imul(h1 ^ (h1 >>> 13), 3266489909);
   return (4294967296 * (2097151 & h2) + (h1 >>> 0)).toString(36);
 }
+/**
+ * Add file dragover listeners to an element and add a dragging attribute if holding a file over it.
+ * @param dropZone - The element that will be the drop zone.
+ * @returns The file object.
+ */
 function addDrag(dropZone) {
   dropZone.setAttribute("drag-initiated", "");
   // Optional.   Show the copy icon when dragging over.  Seems to only work for
