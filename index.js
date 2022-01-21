@@ -24,12 +24,14 @@ var keys = {};
 
 const FILE_SIZE_LIMIT = 200; /*mb*/
 
+/* Creating a new socket server... */
 const io = new Server(server, {
   pingTimeout: 30000,
   maxHttpBufferSize: 1e6 * FILE_SIZE_LIMIT,
 });
 
 const mime = require("mime-types");
+/* JavaScript's built-in Math.imul() function is used to compute the hash. */
 const hash = function (str, seed = 0) {
   let h1 = 0xdeadbeef ^ seed,
     h2 = 0x41c6ce57 ^ seed;
@@ -47,6 +49,8 @@ const hash = function (str, seed = 0) {
   return (4294967296 * (2097151 & h2) + (h1 >>> 0)).toString(36);
 };
 
+/* If the uploads directory exists, delete all of the files in it. If it doesn't exist, create it.
+*/
 if (fs.existsSync(`${__dirname}/uploads`)) {
   const files = fs.readdirSync(`${__dirname}/uploads`);
 
@@ -56,10 +60,12 @@ if (fs.existsSync(`${__dirname}/uploads`)) {
 } else {
   fs.mkdirSync(`${__dirname}/uploads`);
 }
+/* Sending the index.html file to the client. */
 
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/public/index.html");
 });
+
 app.post("/", (req, res) => {
   res.cookie(
     "error",
@@ -70,6 +76,7 @@ app.post("/", (req, res) => {
   );
 });
 
+/* Get all the errors for a given IP address. */
 app.get("/errors/:ip", (req, res) => {
   var formatted = {};
   var errs = errors.filter((i) => i.ip == req.params.ip);
@@ -80,6 +87,7 @@ app.get("/errors/:ip", (req, res) => {
   res.json(formatted);
 });
 
+/* This is telling Express to serve up the public folder as static content. */
 app.use(express.static(path.join(__dirname, "public")));
 
 io.on("connection", (socket) => {
@@ -88,6 +96,8 @@ io.on("connection", (socket) => {
   var _id = id();
   var name = id();
   var files = [];
+  /* When a client disconnects, remove them from the connections array and send a message to all
+  other clients that a client has left. */
   socket.on("disconnect", () => {
     connections = connections.filter((i) => i.id !== _id);
     socket.to(ip).emit("client left", { name, id: _id });
@@ -98,6 +108,7 @@ io.on("connection", (socket) => {
       } catch (e) {}
     }
   });
+
   socket.on("error", (err) => {
     errors.push({ ...err, time: new Date().toString() });
   });
@@ -112,6 +123,11 @@ io.on("connection", (socket) => {
     io.to(ip).emit("uploading", { id, toId: to });
   });
 
+/* When a client connects,
+we add their information to the connections array. We then join the
+client's IP address and their ID. We then emit a "joined room" event
+to the client's IP address. We then emit a "new client" event to the
+client's IP address. */
   socket.on("ip", (info) => {
     joined = true;
     ip = info.addr ? hash(info.addr) : info.hash;
@@ -138,6 +154,7 @@ io.on("connection", (socket) => {
       .emit("new client", { name, id: _id, userAgent: info.userAgent });
   });
 
+  /* When a file is received, it is saved to the server and then deleted after 5 minutes. */
   socket.on("file", (blob) => {
     if (!joined) return;
 

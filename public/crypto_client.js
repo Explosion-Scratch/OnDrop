@@ -32,6 +32,13 @@ window.cryptWorker.addEventListener("message", ({ data }) => {
   }
 });
 
+/**
+ * When the browser receives a message from the worker, it checks the message type. If the message
+type is "key generated", it extracts the key from the message and calls the publicKeyPromiseRes
+function.
+ * @param e - The event object
+ * @returns None
+ */
 function keyHandler(e) {
   const { type, key } = e.data;
   if (type === "key generated") {
@@ -51,6 +58,13 @@ window.cryptWorker.addEventListener("message", ({ data }) => {
   }
 });
 
+/**
+ * Take a message type and a message payload, and returns a promise that resolves to the message
+payload.
+ * @param messageType - The type of message to send to the webworker.
+ * @param messagePayload - An array of the parameters to be passed to the webworker.
+ * @returns A promise that resolves with the message payload.
+ */
 function res(messageType, messagePayload) {
   return new Promise((resolve, reject) => {
     // Generate a random message id to identify the corresponding event callback
