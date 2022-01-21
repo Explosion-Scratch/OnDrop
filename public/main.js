@@ -17,6 +17,8 @@ var app = Vue.createApp({
     };
   },
   methods: {
+    /* When the user clicks on a button, the button's id is stored in app.justClicked. Then, the
+    user is prompted to select a file. The file is then sent to the server. */
     upload_to_client: async (event) => {
       var t = event.target;
       app.justClicked = t.getAttribute("data-id");
@@ -44,6 +46,8 @@ var app = Vue.createApp({
   },
 }).mount("#app");
 
+/* Every five seconds, increase the messageIndex by one. If the messageIndex is greater than the
+number of messages, reset the messageIndex to zero. */
 setInterval(() => {
   app.messageIndex++;
   if (app.messageIndex > app.messages.length - 1) {
@@ -55,6 +59,10 @@ var socket = io();
 var ip;
 var id = null;
 
+/* When the page loads, we fetch the user's IP address from an external service, and then we send
+that IP address to the server. The server then generates a key for the user, and sends it back to
+the client. The client then sends the key back to the server, and the server then sends the key to
+the server. */
 fetch("https://icanhazip.com/")
   .then((res) => res.text())
   .then(async (data) => {
@@ -82,6 +90,7 @@ fetch("https://icanhazip.com/")
     if (param("ip")) {
       stuff.hash = param("ip");
     } else {
+      //IP is hashed server side
       stuff.addr = ip;
     }
     socket.emit("ip", stuff);
@@ -95,6 +104,7 @@ socket.on("joined room", async (_) => {
     rewriteUrl();
     return;
   }
+  /* If there is a file_picker URL param, show the file upload button. */
   await new Promise((resolve) => {
     alert({
       title: "Click 'upload' to upload a file",
@@ -103,7 +113,7 @@ socket.on("joined room", async (_) => {
     }).then(resolve);
     document.querySelector("#popup-close").style.width = "100%";
   });
-  // If we get file from service worker.
+  // If we get file from service worker. (share_target)
   var file = await getFile();
   console.log("File ", file);
   for (let item of document.querySelectorAll("[data-id]")) {
@@ -126,6 +136,7 @@ socket.on("joined room", async (_) => {
     history.replaceState({}, "OnDrop", `?ip=${_}${stgt}`);
   }
 });
+/* When a new client connects, add them to the list of clients. */
 socket.on("new client", async (_) => {
   app.clients = [...app.clients, _];
 
@@ -142,14 +153,20 @@ socket.on("new client", async (_) => {
     });
   }
 });
+/* When a client disconnects, remove them from the list of clients. */
 socket.on("client left", (_) => {
   console.log("Client left: ", _);
   app.clients = app.clients.filter((i) => i.id !== _.id);
 });
+/* Listen for the ID of the current client */
 socket.on("id", (_) => {
   console.log("This client's id is: ", _);
   id = _;
 });
+/* When a file is uploaded, the server emits an event with the file's id and the id of the user who
+uploaded it. The client checks if the id matches its own id. If it does, it sets the uploading
+attribute on itself. If it doesn't, it sets the uploading attribute on the element with the matching
+id. */
 socket.on("uploading", ({ id: _id, toId }) => {
   if (_id === id) {
     [...document.querySelectorAll("[data-id]")]
@@ -164,12 +181,16 @@ socket.on("uploading", ({ id: _id, toId }) => {
     .find((i) => i.getAttribute("data-id") === _id)
     .setAttribute("uploading", "");
 });
+/* When the server emits the `done uploading` event, it will send a payload containing the id of the
+user that just uploaded. We then use that id to find the corresponding user in the DOM and
+remove the `uploading` attribute. */
 socket.on("done uploading", ({ id: _id }) => {
   console.log("Done uploading", _id);
   [...document.querySelectorAll("[data-id]")]
     .find((i) => i.getAttribute("data-id") === _id)
     .removeAttribute("uploading");
 });
+/* When a file is sent to us, we want to decrypt it and then download it. */
 socket.on("got file", async (info) => {
   console.log("info.fromId is: ", info.fromId, info.fromId === id);
   if (info.fromId === id) {
