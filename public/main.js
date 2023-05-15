@@ -63,10 +63,15 @@ var id = null;
 that IP address to the server. The server then generates a key for the user, and sends it back to
 the client. The client then sends the key back to the server, and the server then sends the key to
 the server. */
-fetch("https://icanhazip.com/")
-  .then((res) => res.text())
-  .then(async (data) => {
-    ip = param("ip") || data;
+if (param('ip')){
+  connectWithIP(param('ip'));
+} else {
+  fetch("https://icanhazip.com/")
+    .then((res) => res.text())
+    .then((ip) => connectWithIP(ip))
+    .catch((e) => connectWithIP(hash(new Date().toDateString())))
+}
+function connectWithIP(ip){
     if (param("dev")) {
       console.log(
         `%cHello dev!%c\nGo to https://ondrop.dev/errors/${ip} to see logging from this IP address.`,
@@ -94,7 +99,7 @@ fetch("https://icanhazip.com/")
       stuff.addr = ip;
     }
     socket.emit("ip", stuff);
-  });
+}
 
 var joinedTime = -1;
 socket.on("joined room", async (_) => {
