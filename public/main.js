@@ -63,7 +63,7 @@ var id = null;
 that IP address to the server. The server then generates a key for the user, and sends it back to
 the client. The client then sends the key back to the server, and the server then sends the key to
 the server. */
-if (param('ip')){
+if (param('ip')) {
   connectWithIP(param('ip'));
 } else {
   fetch("https://icanhazip.com/")
@@ -71,35 +71,37 @@ if (param('ip')){
     .then((ip) => connectWithIP(ip))
     .catch((e) => connectWithIP(hash(new Date().toDateString())))
 }
-async function connectWithIP(ip){
-    if (param("dev")) {
-      console.log(
-        `%cHello dev!%c\nGo to https://ondrop.dev/errors/${ip} to see logging from this IP address.`,
-        "color: orange; font-weight: 500; font-size: 1.3rem;",
-        "color: gray; font-style: italic;"
-      );
-    }
-    if (!localStorage.getItem("name")) {
-      localStorage.setItem(
-        "name",
-        await prompt({ title: "Name", text: "Enter your name below." })
-      );
-    }
-    // Wait for key to be generated.
-    await cryptoLoadPromise;
-    // c is the crypto lib from crypto_client.js
-    await c.key();
-    var stuff = {
-      name: localStorage.getItem("name"),
-      userAgent: navigator.userAgent,
-    };
-    if (param("ip")) {
-      stuff.hash = param("ip");
-    } else {
-      //IP is hashed server side
-      stuff.addr = ip;
-    }
-    socket.emit("ip", stuff);
+async function connectWithIP(ip) {
+  if (param("dev")) {
+    console.log(
+      `%cHello dev!%c\nGo to https://ondrop.dev/errors/${ip} to see logging from this IP address.`,
+      "color: orange; font-weight: 500; font-size: 1.3rem;",
+      "color: gray; font-style: italic;"
+    );
+  }
+  if (!localStorage.getItem("name")) {
+    localStorage.setItem(
+      "name",
+      await prompt({ title: "Name", text: "Enter your name below." })
+    );
+  }
+  // Wait for key to be generated.
+  await cryptoLoadPromise;
+  await until(() => window.c);
+  // c is the crypto lib from crypto_client.js
+  await c.key();
+  var stuff = {
+    name: localStorage.getItem("name"),
+    userAgent: navigator.userAgent,
+  };
+  if (param("ip")) {
+    stuff.hash = param("ip");
+  } else {
+    //IP is hashed server side
+    stuff.addr = ip;
+  }
+  console.log('Emit IP', stuff, ip)
+  socket.emit("ip", stuff);
 }
 
 var joinedTime = -1;
@@ -218,11 +220,10 @@ socket.on("got file", async (info) => {
     backgroundclick: true,
     text: `<a target="_blank" href=${JSON.stringify(
       info.url
-    )} class="underline">${
-      info.name
-    }</a><br><a id="download_link" href=${JSON.stringify(
-      info.url
-    )} download=${JSON.stringify(info.name)}>Download</a>`,
+    )} class="underline">${info.name
+      }</a><br><a id="download_link" href=${JSON.stringify(
+        info.url
+      )} download=${JSON.stringify(info.name)}>Download</a>`,
     buttontext: `Download`,
   });
 
@@ -482,5 +483,31 @@ function addDrag(dropZone) {
 
   dropZone.addEventListener("dragleave", () => {
     dropZone.removeAttribute("dragging");
+  });
+}
+
+/**
+ * Waits until the provided function returns a truthy value.
+ * @param {Function} func - The function to execute.
+ * @param {Number} int - The number of milliseconds to wait for the setInterval.
+ * @returns {Promise} A promise that resolves with the truthy value returned by the function.
+ * @example
+ * // Wait until isLoggedIn returns truthy value
+ * await until(() => isLoggedIn());
+ */
+function until(func, int = 100) {
+  return new Promise(resolve => {
+    let result = func();
+    if (result) {
+      resolve(result);
+    } else {
+      let interval = setInterval(() => {
+        result = func();
+        if (result) {
+          clearInterval(interval);
+          resolve(result);
+        }
+      }, int);
+    }
   });
 }
