@@ -71,7 +71,7 @@ if (param('ip')){
     .then((ip) => connectWithIP(ip))
     .catch((e) => connectWithIP(hash(new Date().toDateString())))
 }
-function connectWithIP(ip){
+async function connectWithIP(ip){
     if (param("dev")) {
       console.log(
         `%cHello dev!%c\nGo to https://ondrop.dev/errors/${ip} to see logging from this IP address.`,
@@ -87,6 +87,7 @@ function connectWithIP(ip){
     }
     // Wait for key to be generated.
     await cryptoLoadPromise;
+    // c is the crypto lib from crypto_client.js
     await c.key();
     var stuff = {
       name: localStorage.getItem("name"),
